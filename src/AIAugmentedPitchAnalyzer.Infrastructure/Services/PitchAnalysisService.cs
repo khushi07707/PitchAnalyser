@@ -6,6 +6,8 @@ using AIAugmentedPitchAnalyzer.Domain.Entities;
 using AIAugmentedPitchAnalyzer.Shared.Responses;
 using AutoMapper;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AIAugmentedPitchAnalyzer.Infrastructure.Services
@@ -111,6 +113,57 @@ namespace AIAugmentedPitchAnalyzer.Infrastructure.Services
             }
 
             return new ApiResponse<PitchAnalysisParsedDto> { Data = _mapper.Map<PitchAnalysisParsedDto>(pitch.Analysis) };
+        }
+
+        public async Task<ApiResponse<PitchAnalysisDashboardDto>> GetDashboardAsync()
+        {
+            var pitches = await _pitchRepository.GetAllWithAnalysisAsync();
+            var totalPitches = 0;
+            var analyzedPitches = 0;
+            var scores = new List<double>();
+
+            foreach (var pitch in pitches)
+            {
+                totalPitches++;
+                if (pitch.Analysis?.Score.HasValue == true)
+                {
+                    analyzedPitches++;
+                    scores.Add(pitch.Analysis.Score.Value);
+                }
+            }
+
+            var dashboard = new PitchAnalysisDashboardDto
+            {
+                TotalPitches = totalPitches,
+                AnalyzedPitches = analyzedPitches,
+                PendingAnalysis = totalPitches - analyzedPitches,
+                AverageScore = scores.Count > 0 ? Math.Round(scores.Average(), 2) : 0,
+                HighestScore = scores.Count > 0 ? scores.Max() : 0,
+                LowestScore = scores.Count > 0 ? scores.Min() : 0
+            };
+
+            return new ApiResponse<PitchAnalysisDashboardDto> { Data = dashboard };
+        }
+
+        public async Task<ApiResponse<IEnumerable<PitchAnalysisHistoryDto>>> GetAnalysisHistoryAsync()
+        {
+            var pitches = await _pitchRepository.GetAllWithAnalysisAsync();
+            var history = pitches
+                .Where(p => p.Analysis != null)
+                .Select(p => new PitchAnalysisHistoryDto
+                {
+                    PitchId = p.Id,
+                    PitchTitle = p.Title,
+                    AnalysisId = p.Analysis!.Id,
+                    Summary = p.Analysis.Summary ?? string.Empty,
+                    Score = p.Analysis.Score,
+                    Recommendations = p.Analysis.Recommendations,
+                    CompletedAt = p.Analysis.CompletedAt
+                })
+                .OrderByDescending(item => item.CompletedAt)
+                .ToList();
+
+            return new ApiResponse<IEnumerable<PitchAnalysisHistoryDto>> { Data = history };
         }
     }
 }

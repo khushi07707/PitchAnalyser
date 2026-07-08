@@ -94,6 +94,32 @@ namespace AIAugmentedPitchAnalyzer.Persistence.Context
                 b.Property(x => x.AnalysisJson).IsRequired();
                 b.HasOne(x => x.Pitch).WithOne(p => p.Analysis).HasForeignKey<PitchAnalysis>(x => x.PitchId).OnDelete(DeleteBehavior.Cascade);
             });
+
+            // Convert all table, column, key, and constraint names to lowercase
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                entity.SetTableName(entity.GetTableName()?.ToLowerInvariant());
+
+                foreach (var property in entity.GetProperties())
+                {
+                    property.SetColumnName(property.GetColumnName().ToLowerInvariant());
+                }
+
+                foreach (var key in entity.GetKeys())
+                {
+                    key.SetName(key.GetName()?.ToLowerInvariant());
+                }
+
+                foreach (var fk in entity.GetForeignKeys())
+                {
+                    fk.SetConstraintName(fk.GetConstraintName()?.ToLowerInvariant());
+                }
+
+                foreach (var index in entity.GetIndexes())
+                {
+                    index.SetDatabaseName(index.GetDatabaseName()?.ToLowerInvariant());
+                }
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ namespace AIAugmentedPitchAnalyzer.Api.Controllers
             Guid createdBy = Guid.Empty;
             if (User?.Identity?.IsAuthenticated == true)
             {
-                var sub = User.FindFirst("sub")?.Value;
+                var sub = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
                 Guid.TryParse(sub, out createdBy);
             }
 
@@ -100,7 +100,7 @@ namespace AIAugmentedPitchAnalyzer.Api.Controllers
             Guid updatedBy = Guid.Empty;
             if (User?.Identity?.IsAuthenticated == true)
             {
-                var sub = User.FindFirst("sub")?.Value;
+                var sub = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
                 Guid.TryParse(sub, out updatedBy);
             }
 
@@ -116,7 +116,7 @@ namespace AIAugmentedPitchAnalyzer.Api.Controllers
             Guid deletedBy = Guid.Empty;
             if (User?.Identity?.IsAuthenticated == true)
             {
-                var sub = User.FindFirst("sub")?.Value;
+                var sub = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
                 Guid.TryParse(sub, out deletedBy);
             }
 

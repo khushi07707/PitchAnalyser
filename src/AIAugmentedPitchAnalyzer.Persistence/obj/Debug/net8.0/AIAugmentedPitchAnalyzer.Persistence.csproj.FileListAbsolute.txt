@@ -19,3 +19,4 @@ C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Persistence\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Persistence.pdb
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Persistence\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Persistence.genruntimeconfig.cache
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Persistence\obj\Debug\net8.0\ref\AIAugmentedPitchAnalyzer.Persistence.dll
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Persistence\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Persistence.sourcelink.json

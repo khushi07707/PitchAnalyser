@@ -16,6 +16,7 @@ namespace AIAugmentedPitchAnalyzer.Application.Mapping
             CreateMap<PitchAnalysis, PitchAnalysisDto>().ReverseMap();
             CreateMap<PitchAnalysis, PitchAnalysisResultDto>().ReverseMap();
             CreateMap<PitchAnalysis, PitchAnalysisParsedDto>().ReverseMap();
+            CreateMap<PitchAnalysis, PitchAnalysisDashboardDto>().ReverseMap();
             CreateMap<Pitch, PitchDto>().ReverseMap();
             CreateMap<UploadPitchRequest, Pitch>().ReverseMap();
             CreateMap<Domain.Entities.FileRecord, AIAugmentedPitchAnalyzer.Application.DTOs.File.FileRecordDto>().ReverseMap();

@@ -10,5 +10,7 @@ namespace AIAugmentedPitchAnalyzer.Application.Interfaces.IServices
         Task<ApiResponse<PitchAnalysisResultDto>> AnalyzePitchAsync(Guid pitchId, Guid requestedBy);
         Task<ApiResponse<PitchAnalysisDto>> GetPitchAnalysisAsync(Guid pitchId);
         Task<ApiResponse<PitchAnalysisParsedDto>> GetParsedPitchAnalysisAsync(Guid pitchId);
+        Task<ApiResponse<PitchAnalysisDashboardDto>> GetDashboardAsync();
+        Task<ApiResponse<IEnumerable<PitchAnalysisHistoryDto>>> GetAnalysisHistoryAsync();
     }
 }

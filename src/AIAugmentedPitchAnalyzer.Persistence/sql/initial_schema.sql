@@ -45,7 +45,9 @@ CREATE TABLE financial_data (
     netprofit numeric,
     currency varchar(10),
     fiscalyear integer,
-    createdat timestamp without time zone NOT NULL
+    createdat timestamp without time zone NOT NULL,
+    updatedat timestamp without time zone,
+    isdeleted boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE file_records (
@@ -55,7 +57,11 @@ CREATE TABLE file_records (
     contenttype varchar(200),
     size bigint,
     uploadedat timestamp without time zone NOT NULL,
-    uploadedbyid uuid REFERENCES users(id)
+    uploadedbyid uuid REFERENCES users(id),
+    pitchid uuid,
+    createdat timestamp without time zone NOT NULL,
+    updatedat timestamp without time zone,
+    isdeleted boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE pitches (
@@ -63,7 +69,11 @@ CREATE TABLE pitches (
     startupid uuid REFERENCES startups(id) ON DELETE CASCADE,
     title varchar(300),
     uploadedat timestamp without time zone NOT NULL,
-    filerecordid uuid UNIQUE REFERENCES file_records(id)
+    filerecordid uuid UNIQUE REFERENCES file_records(id),
+    extractedtext text,
+    createdat timestamp without time zone NOT NULL,
+    updatedat timestamp without time zone,
+    isdeleted boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE pitch_analyses (
@@ -73,5 +83,8 @@ CREATE TABLE pitch_analyses (
     summary text,
     score double precision,
     recommendations text,
-    completedat timestamp without time zone
+    completedat timestamp without time zone,
+    createdat timestamp without time zone NOT NULL,
+    updatedat timestamp without time zone,
+    isdeleted boolean NOT NULL DEFAULT false
 );

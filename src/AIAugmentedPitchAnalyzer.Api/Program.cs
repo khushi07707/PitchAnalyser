@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
+// Clear Default Inbound Claim Mapping to retain standard JWT claim names like "sub"
+System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuration
@@ -17,6 +20,16 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 // Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+});
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -98,12 +111,18 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Enable Global Exception Handling
+app.UseMiddleware<AIAugmentedPitchAnalyzer.Api.Middleware.ExceptionHandlingMiddleware>();
+
 // Configure middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Enable CORS
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -13,3 +13,4 @@ C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Shared\obj\Debug\net8.0\refint\AIAugmentedPitchAnalyzer.Shared.dll
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Shared\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Shared.pdb
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Shared\obj\Debug\net8.0\ref\AIAugmentedPitchAnalyzer.Shared.dll
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Shared\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Shared.sourcelink.json

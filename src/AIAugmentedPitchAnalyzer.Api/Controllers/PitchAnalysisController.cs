@@ -70,5 +70,21 @@ namespace AIAugmentedPitchAnalyzer.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("dashboard")]
+        [Authorize]
+        public async Task<IActionResult> GetDashboard()
+        {
+            var result = await _pitchAnalysisService.GetDashboardAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("history")]
+        [Authorize]
+        public async Task<IActionResult> GetAnalysisHistory()
+        {
+            var result = await _pitchAnalysisService.GetAnalysisHistoryAsync();
+            return Ok(result);
+        }
     }
 }

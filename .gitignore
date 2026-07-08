@@ -19,6 +19,8 @@ backend/.env
 # Media Uploads
 backend/uploads/*
 !backend/uploads/.gitkeep
+src/AIAugmentedPitchAnalyzer.Api/uploads/*
+!src/AIAugmentedPitchAnalyzer.Api/uploads/.gitkeep
 
 # IDEs and OS files
 .vscode/
@@ -28,3 +30,7 @@ backend/uploads/*
 *.user
 Thumbs.db
 Desktop.ini
+
+# C# build outputs
+**/bin/
+**/obj/

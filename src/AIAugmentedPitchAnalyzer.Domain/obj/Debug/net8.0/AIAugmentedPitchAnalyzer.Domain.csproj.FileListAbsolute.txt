@@ -9,3 +9,4 @@ C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\refint\AIAugmentedPitchAnalyzer.Domain.dll
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.pdb
 C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\ref\AIAugmentedPitchAnalyzer.Domain.dll
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.sourcelink.json

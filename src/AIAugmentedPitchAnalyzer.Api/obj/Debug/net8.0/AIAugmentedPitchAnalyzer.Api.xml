@@ -11,5 +11,10 @@
             <param name="pitchId">The pitch identifier.</param>
             <returns>A parsed pitch analysis result.</returns>
         </member>
+        <member name="T:AIAugmentedPitchAnalyzer.Api.Middleware.ExceptionHandlingMiddleware">
+            <summary>
+            Middleware to catch unhandled exceptions globally and return standard ApiResponse schema.
+            </summary>
+        </member>
     </members>
 </doc>
