@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "dgSpecHash": "+7BbNzjP/Gs=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Nishtha Mathur\\OneDrive - UPES\\Desktop\\AI Augmented Pitch Analyser\\src\\AIAugmentedPitchAnalyzer.Infrastructure\\AIAugmentedPitchAnalyzer.Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\documentformat.openxml\\3.0.0\\documentformat.openxml.3.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\documentformat.openxml.framework\\3.0.0\\documentformat.openxml.framework.3.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.8\\microsoft.entityframeworkcore.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.8\\microsoft.entityframeworkcore.abstractions.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.8\\microsoft.entityframeworkcore.analyzers.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.8\\microsoft.entityframeworkcore.relational.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.0\\microsoft.extensions.caching.memory.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.logging\\8.0.0\\microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.abstractions\\6.32.0\\microsoft.identitymodel.abstractions.6.32.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.32.0\\microsoft.identitymodel.jsonwebtokens.6.32.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.logging\\6.32.0\\microsoft.identitymodel.logging.6.32.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.32.0\\microsoft.identitymodel.tokens.6.32.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\npgsql\\8.0.4\\npgsql.8.0.4.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.8\\npgsql.entityframeworkcore.postgresql.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.32.0\\system.identitymodel.tokens.jwt.6.32.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.io.packaging\\8.0.0\\system.io.packaging.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.text.encodings.web\\4.7.2\\system.text.encodings.web.4.7.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig\\1.7.0-custom-5\\uglytoad.pdfpig.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.core\\1.7.0-custom-5\\uglytoad.pdfpig.core.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.fonts\\1.7.0-custom-5\\uglytoad.pdfpig.fonts.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.tokenization\\1.7.0-custom-5\\uglytoad.pdfpig.tokenization.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.tokens\\1.7.0-custom-5\\uglytoad.pdfpig.tokens.1.7.0-custom-5.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "AIAugmentedPitchAnalyzer.Infrastructure depends on System.IdentityModel.Tokens.Jwt (>= 6.31.1) but System.IdentityModel.Tokens.Jwt 6.31.1 was not found. An approximate best match of System.IdentityModel.Tokens.Jwt 6.32.0 was resolved.",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 6.32.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}

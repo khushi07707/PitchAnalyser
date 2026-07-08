@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Application\AIAugmentedPitchAnalyzer.Application.csproj" />
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Infrastructure\AIAugmentedPitchAnalyzer.Infrastructure.csproj" />
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Persistence\AIAugmentedPitchAnalyzer.Persistence.csproj" />
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Shared\AIAugmentedPitchAnalyzer.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "MFi7cGeFniMMZdHOWg/sVc7qBfCA/OkH4d9RTmYR2vw=",
+  "Source": "AIAugmentedPitchAnalyzer.Api",
+  "BasePath": "_content/AIAugmentedPitchAnalyzer.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

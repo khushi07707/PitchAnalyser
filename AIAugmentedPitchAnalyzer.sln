@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0745BB3F-F56D-4266-A10A-F9E92B3103AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIAugmentedPitchAnalyzer.Api", "src\AIAugmentedPitchAnalyzer.Api\AIAugmentedPitchAnalyzer.Api.csproj", "{D35B7BD8-85EC-4661-AEBD-62F1FE97C30C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIAugmentedPitchAnalyzer.Application", "src\AIAugmentedPitchAnalyzer.Application\AIAugmentedPitchAnalyzer.Application.csproj", "{63AEEA82-2EC2-47F2-91DD-FE529F5C63EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIAugmentedPitchAnalyzer.Domain", "src\AIAugmentedPitchAnalyzer.Domain\AIAugmentedPitchAnalyzer.Domain.csproj", "{3C86BE92-B756-43A4-B7F9-4C9CB22FF1DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIAugmentedPitchAnalyzer.Infrastructure", "src\AIAugmentedPitchAnalyzer.Infrastructure\AIAugmentedPitchAnalyzer.Infrastructure.csproj", "{18EAC956-8563-4B4F-8A3A-04AEBEEFEEB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIAugmentedPitchAnalyzer.Persistence", "src\AIAugmentedPitchAnalyzer.Persistence\AIAugmentedPitchAnalyzer.Persistence.csproj", "{7B4E0597-6A75-4A8D-9E07-6199E5ED00D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIAugmentedPitchAnalyzer.Shared", "src\AIAugmentedPitchAnalyzer.Shared\AIAugmentedPitchAnalyzer.Shared.csproj", "{3C3FF8FA-98F9-4741-8D3E-D65CD7A07140}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D35B7BD8-85EC-4661-AEBD-62F1FE97C30C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35B7BD8-85EC-4661-AEBD-62F1FE97C30C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35B7BD8-85EC-4661-AEBD-62F1FE97C30C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35B7BD8-85EC-4661-AEBD-62F1FE97C30C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63AEEA82-2EC2-47F2-91DD-FE529F5C63EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AEEA82-2EC2-47F2-91DD-FE529F5C63EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AEEA82-2EC2-47F2-91DD-FE529F5C63EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AEEA82-2EC2-47F2-91DD-FE529F5C63EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C86BE92-B756-43A4-B7F9-4C9CB22FF1DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C86BE92-B756-43A4-B7F9-4C9CB22FF1DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C86BE92-B756-43A4-B7F9-4C9CB22FF1DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C86BE92-B756-43A4-B7F9-4C9CB22FF1DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18EAC956-8563-4B4F-8A3A-04AEBEEFEEB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18EAC956-8563-4B4F-8A3A-04AEBEEFEEB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18EAC956-8563-4B4F-8A3A-04AEBEEFEEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18EAC956-8563-4B4F-8A3A-04AEBEEFEEB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B4E0597-6A75-4A8D-9E07-6199E5ED00D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4E0597-6A75-4A8D-9E07-6199E5ED00D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4E0597-6A75-4A8D-9E07-6199E5ED00D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4E0597-6A75-4A8D-9E07-6199E5ED00D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C3FF8FA-98F9-4741-8D3E-D65CD7A07140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C3FF8FA-98F9-4741-8D3E-D65CD7A07140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C3FF8FA-98F9-4741-8D3E-D65CD7A07140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C3FF8FA-98F9-4741-8D3E-D65CD7A07140}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D35B7BD8-85EC-4661-AEBD-62F1FE97C30C} = {0745BB3F-F56D-4266-A10A-F9E92B3103AA}
+		{63AEEA82-2EC2-47F2-91DD-FE529F5C63EA} = {0745BB3F-F56D-4266-A10A-F9E92B3103AA}
+		{3C86BE92-B756-43A4-B7F9-4C9CB22FF1DA} = {0745BB3F-F56D-4266-A10A-F9E92B3103AA}
+		{18EAC956-8563-4B4F-8A3A-04AEBEEFEEB4} = {0745BB3F-F56D-4266-A10A-F9E92B3103AA}
+		{7B4E0597-6A75-4A8D-9E07-6199E5ED00D3} = {0745BB3F-F56D-4266-A10A-F9E92B3103AA}
+		{3C3FF8FA-98F9-4741-8D3E-D65CD7A07140} = {0745BB3F-F56D-4266-A10A-F9E92B3103AA}
+	EndGlobalSection
+EndGlobal

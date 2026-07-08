@@ -1,0 +1,11 @@
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\bin\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.deps.json
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\bin\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.dll
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\bin\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.pdb
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.AssemblyInfoInputs.cache
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.AssemblyInfo.cs
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.dll
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\refint\AIAugmentedPitchAnalyzer.Domain.dll
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\AIAugmentedPitchAnalyzer.Domain.pdb
+C:\Users\Nishtha Mathur\OneDrive - UPES\Desktop\AI Augmented Pitch Analyser\src\AIAugmentedPitchAnalyzer.Domain\obj\Debug\net8.0\ref\AIAugmentedPitchAnalyzer.Domain.dll

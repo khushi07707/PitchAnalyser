@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AIAugmentedPitchAnalyzer.Api</name>
+    </assembly>
+    <members>
+        <member name="M:AIAugmentedPitchAnalyzer.Api.Controllers.PitchAnalysisController.GetParsedPitchAnalysis(System.Guid)">
+            <summary>
+            Retrieves the parsed AI analysis for a pitch, including summary, score, and recommendations.
+            </summary>
+            <param name="pitchId">The pitch identifier.</param>
+            <returns>A parsed pitch analysis result.</returns>
+        </member>
+    </members>
+</doc>

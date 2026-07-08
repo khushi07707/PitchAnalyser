@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis: NovaTech Solutions — PitchPilotAI</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .analysis-tab-bar {
+      display: flex;
+      gap: 2px;
+      overflow-x: auto;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-xl);
+      padding: 4px;
+      border: 1px solid var(--border-subtle);
+      scrollbar-width: none;
+    }
+    .analysis-tab-bar::-webkit-scrollbar { display: none; }
+
+    .atab {
+      flex-shrink: 0; padding: 0.5rem 1.1rem;
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm); font-weight: 600;
+      color: var(--text-secondary); cursor: pointer;
+      border: none; background: transparent;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+    .atab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+    .atab.active {
+      background: var(--bg-card); color: var(--text-primary);
+      box-shadow: var(--shadow-sm); border: 1px solid var(--border-default);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+    .score-svg {
+      transform: rotate(-90deg);
+      position: absolute;
+    }
+
+    .big-score {
+      position: relative;
+      width: 180px; height: 180px;
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .score-center {
+      position: absolute;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .metric-row {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .metric-row:last-child { border-bottom: none; }
+
+    .risk-bar {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-3) 0;
+    }
+
+    .competitor-cell {
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+
+    .check-icon { color: var(--success-400); }
+    .x-icon { color: var(--danger-400); }
+
+    .recommendation-card {
+      background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.04) 100%);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      text-align: center;
+    }
+
+    .invest-badge {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      font-size: var(--text-base); font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .invest-badge.strong {
+      background: rgba(16,185,129,0.2);
+      color: var(--success-400);
+      border: 2px solid rgba(16,185,129,0.4);
+    }
+
+    .invest-badge.moderate {
+      background: rgba(245,158,11,0.2);
+      color: var(--warning-400);
+      border: 2px solid rgba(245,158,11,0.4);
+    }
+
+    .invest-badge.high-risk {
+      background: rgba(239,68,68,0.2);
+      color: var(--danger-400);
+      border: 2px solid rgba(239,68,68,0.4);
+    }
+
+    .info-chip {
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: 6px 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs); font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 1024px) {
+      .app-main { margin-left: 0; }
+      .app-sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="navbar-brand" style="font-size: var(--text-lg);">
+        <div class="navbar-logo" style="width: 30px; height: 30px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        PitchPilot<span style="color: var(--brand-400);">AI</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <a href="dashboard.html" class="sidebar-item"><i data-lucide="layout-dashboard" class="sidebar-icon" width="18" height="18"></i>Dashboard</a>
+        <a href="upload.html" class="sidebar-item"><i data-lucide="upload-cloud" class="sidebar-icon" width="18" height="18"></i>Analyze Startup</a>
+        <a href="analysis.html" class="sidebar-item active"><i data-lucide="bar-chart-3" class="sidebar-icon" width="18" height="18"></i>Analysis</a>
+        <a href="reports.html" class="sidebar-item"><i data-lucide="file-text" class="sidebar-icon" width="18" height="18"></i>Reports</a>
+        <a href="history.html" class="sidebar-item"><i data-lucide="clock" class="sidebar-icon" width="18" height="18"></i>History</a>
+        <a href="notifications.html" class="sidebar-item"><i data-lucide="bell" class="sidebar-icon" width="18" height="18"></i>Notifications</a>
+        <a href="team.html" class="sidebar-item"><i data-lucide="users" class="sidebar-icon" width="18" height="18"></i>Team</a>
+        <a href="settings.html" class="sidebar-item"><i data-lucide="settings" class="sidebar-icon" width="18" height="18"></i>Settings</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="flex items-center gap-3">
+        <div class="avatar avatar-sm" style="background: var(--gradient-brand);">AJ</div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Alex Johnson</div>
+          <div style="font-size: var(--text-xs); color: var(--text-muted);">Pro Plan</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="app-main">
+    <!-- TOP BAR -->
+    <header class="app-topbar">
+      <div class="flex items-center gap-4">
+        <button class="btn btn-ghost btn-icon" id="sidebar-toggle"><i data-lucide="menu" width="20" height="20"></i></button>
+        <nav class="breadcrumb">
+          <div class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></div>
+          <span class="breadcrumb-sep">/</span>
+          <div class="breadcrumb-item"><a href="history.html">History</a></div>
+          <span class="breadcrumb-sep">/</span>
+          <div class="breadcrumb-item current">NovaTech Solutions</div>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="btn btn-secondary btn-sm" onclick="Toast.success('Saved!','Analysis added to favorites.')">
+          <i data-lucide="star" width="14" height="14"></i> Favorite
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="Toast.info('Shared!','Link copied to clipboard.')">
+          <i data-lucide="share-2" width="14" height="14"></i> Share
+        </button>
+        <a href="memo.html" class="btn btn-primary btn-sm">
+          <i data-lucide="download" width="14" height="14"></i> Download Report
+        </a>
+        <button data-theme-toggle class="btn btn-ghost btn-icon">
+          <span class="icon-moon"><i data-lucide="moon" width="18" height="18"></i></span>
+          <span class="icon-sun" style="display:none"><i data-lucide="sun" width="18" height="18"></i></span>
+        </button>
+        <div class="avatar avatar-md cursor-pointer" style="background: var(--gradient-brand);">AJ</div>
+      </div>
+    </header>
+
+    <div class="app-content" style="max-width: 100%;">
+
+      <!-- Company Header -->
+      <div class="card mb-6 animate-fade-in">
+        <div class="card-body">
+          <div class="flex items-start gap-5">
+            <div class="avatar" style="width: 64px; height: 64px; font-size: 24px; border-radius: var(--radius-xl); background: linear-gradient(135deg,#6366F1,#8B5CF6); flex-shrink: 0;">NT</div>
+            <div style="flex: 1; min-width: 0;">
+              <div class="flex items-center gap-3 flex-wrap mb-2">
+                <h1 style="font-size: var(--text-2xl); font-weight: 900; color: var(--text-primary); letter-spacing: -0.03em;">NovaTech Solutions</h1>
+                <span class="invest-badge strong"><i data-lucide="trending-up" width="14" height="14"></i> Strong Invest</span>
+                <span class="badge badge-brand">AI Analyzed</span>
+              </div>
+              <div class="flex gap-3 flex-wrap mb-4">
+                <span class="info-chip"><i data-lucide="cpu" width="12" height="12" style="color: var(--brand-400);"></i> FinTech · AI</span>
+                <span class="info-chip"><i data-lucide="trending-up" width="12" height="12" style="color: var(--success-400);"></i> Series A</span>
+                <span class="info-chip"><i data-lucide="dollar-sign" width="12" height="12" style="color: var(--warning-400);"></i> $5M Ask</span>
+                <span class="info-chip"><i data-lucide="map-pin" width="12" height="12" style="color: var(--purple-400);"></i> San Francisco, CA</span>
+                <span class="info-chip"><i data-lucide="calendar" width="12" height="12" style="color: var(--text-muted);"></i> Founded 2022</span>
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed); max-width: 700px;">
+                NovaTech Solutions is a B2B FinTech company that uses AI-powered cash flow forecasting and automated financial intelligence to help SMBs make smarter financial decisions. Currently serving 1,200+ customers with $2.4M ARR and 180% NRR.
+              </p>
+            </div>
+            <div style="text-align: center; flex-shrink: 0;">
+              <div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-2);">Analyzed July 7, 2026</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">Processing time: 52 seconds</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="analysis-tab-bar mb-6" id="analysis-tabs">
+        <button class="atab active" onclick="switchTab('overview', this)">Overview</button>
+        <button class="atab" onclick="switchTab('business', this)">Business</button>
+        <button class="atab" onclick="switchTab('market', this)">Market</button>
+        <button class="atab" onclick="switchTab('competition', this)">Competition</button>
+        <button class="atab" onclick="switchTab('financials', this)">Financials</button>
+        <button class="atab" onclick="switchTab('founders', this)">Founders</button>
+        <button class="atab" onclick="switchTab('risks', this)">Risks</button>
+        <button class="atab" onclick="switchTab('recommendation', this)">Recommendation</button>
+      </div>
+
+      <!-- ============ OVERVIEW TAB ============ -->
+      <div class="tab-panel active" id="tab-overview">
+        <div style="display: grid; grid-template-columns: 1fr 360px; gap: var(--space-6); align-items: start;">
+          <div class="flex flex-col gap-6">
+
+            <!-- Key Metrics -->
+            <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+              <div class="stat-card">
+                <div class="stat-icon icon-box-success"><i data-lucide="dollar-sign" width="18" height="18"></i></div>
+                <div class="stat-value" style="font-size: var(--text-2xl);">$2.4M</div>
+                <div class="stat-label">ARR</div>
+                <div class="stat-change up">↑ 240% YoY</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon icon-box-brand"><i data-lucide="users" width="18" height="18"></i></div>
+                <div class="stat-value" style="font-size: var(--text-2xl);">1,200+</div>
+                <div class="stat-label">Customers</div>
+                <div class="stat-change up">↑ 3x this year</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon icon-box-purple"><i data-lucide="repeat" width="18" height="18"></i></div>
+                <div class="stat-value" style="font-size: var(--text-2xl);">180%</div>
+                <div class="stat-label">NRR</div>
+                <div class="stat-change up">Best in class</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon icon-box-warning"><i data-lucide="clock" width="18" height="18"></i></div>
+                <div class="stat-value" style="font-size: var(--text-2xl);">18 mo</div>
+                <div class="stat-label">Runway</div>
+                <div class="stat-change up">Post-raise 36 mo</div>
+              </div>
+            </div>
+
+            <!-- AI Summary -->
+            <div class="card">
+              <div class="card-header">
+                <div class="flex items-center gap-2">
+                  <div class="icon-box icon-box-brand"><i data-lucide="brain" width="18" height="18"></i></div>
+                  <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">AI Business Summary</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-4);">
+                  NovaTech Solutions addresses a critical pain point in SMB financial management — the inability to accurately forecast cash flow and make real-time financial decisions. Their AI-powered platform integrates with 40+ accounting tools and banking APIs to provide automated forecasting, anomaly detection, and financial recommendations.
+                </p>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">
+                  The company demonstrates exceptional product-market fit evidenced by 180% NRR and a 94% gross retention rate. Their land-and-expand motion targeting CFOs of SMBs ($5M-$50M revenue) is a proven GTM strategy in the B2B SaaS space. The founding team brings deep domain expertise from Stripe, Plaid, and Carta.
+                </p>
+              </div>
+            </div>
+
+            <!-- Score Breakdown -->
+            <div class="card">
+              <div class="card-header">
+                <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Score Breakdown</h3>
+              </div>
+              <div class="card-body">
+                <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Market Opportunity</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">92/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill success" data-width="92" style="width: 0%;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Team Strength</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">88/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill success" data-width="88" style="width: 0%;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Product & Technology</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">84/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill success" data-width="84" style="width: 0%;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Traction & Revenue</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">90/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill success" data-width="90" style="width: 0%;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Financial Health</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--warning-400);">72/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill warning" data-width="72" style="width: 0%;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Competitive Moat</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">78/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" data-width="78" style="width: 0%;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <span style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500;">Exit Potential</span>
+                      <span style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">85/100</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill success" data-width="85" style="width: 0%;"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue chart -->
+            <div class="card">
+              <div class="card-header">
+                <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Revenue Growth</h3>
+                <p style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">Trailing 12 months + 12 month projection</p>
+              </div>
+              <div class="card-body"><canvas id="revenueChart" height="220"></canvas></div>
+            </div>
+          </div>
+
+          <!-- Right sidebar -->
+          <div class="flex flex-col gap-6">
+
+            <!-- VC Score -->
+            <div class="card text-center">
+              <div class="card-body">
+                <div style="font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-4);">VC Investment Score</div>
+                <div class="big-score">
+                  <svg width="180" height="180" viewBox="0 0 180 180" class="score-svg">
+                    <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12"/>
+                    <circle cx="90" cy="90" r="80" fill="none" stroke="url(#scoreGrad)" stroke-width="12"
+                      stroke-linecap="round"
+                      stroke-dasharray="502.65" stroke-dashoffset="502.65"
+                      id="score-circle" style="transition: stroke-dashoffset 1.8s cubic-bezier(0.4,0,0.2,1);"/>
+                    <defs>
+                      <linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#10B981"/>
+                        <stop offset="100%" stop-color="#6366F1"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div class="score-center">
+                    <div style="font-size: var(--text-5xl); font-weight: 900; color: var(--text-primary); letter-spacing: -0.04em; line-height: 1;" id="score-num">85</div>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted);">out of 100</div>
+                  </div>
+                </div>
+
+                <div class="invest-badge strong" style="margin: var(--space-4) auto;">
+                  <i data-lucide="trending-up" width="16" height="16"></i>
+                  Strong Invest
+                </div>
+
+                <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: var(--leading-relaxed);">
+                  NovaTech ranks in the <strong style="color: var(--success-400);">top 8%</strong> of all FinTech startups analyzed in 2026.
+                </p>
+              </div>
+            </div>
+
+            <!-- Investment Readiness -->
+            <div class="card">
+              <div class="card-header">
+                <h3 style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Investment Readiness</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="radarChart" height="200"></canvas>
+              </div>
+            </div>
+
+            <!-- Quick Facts -->
+            <div class="card">
+              <div class="card-header">
+                <h3 style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Quick Facts</h3>
+              </div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div class="metric-row" style="padding: var(--space-2) 0;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Revenue Model</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--text-primary);">B2B SaaS Subscription</div>
+                </div>
+                <div class="metric-row" style="padding: var(--space-2) 0;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Pricing</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--text-primary);">$299–$999/mo</div>
+                </div>
+                <div class="metric-row" style="padding: var(--space-2) 0;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Previous Funding</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--text-primary);">$1.2M Seed (2023)</div>
+                </div>
+                <div class="metric-row" style="padding: var(--space-2) 0;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Team Size</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--text-primary);">28 employees</div>
+                </div>
+                <div class="metric-row" style="padding: var(--space-2) 0;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Gross Margin</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">78%</div>
+                </div>
+                <div class="metric-row" style="padding: var(--space-2) 0;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Monthly Burn</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--warning-400);">$180K/mo</div>
+                </div>
+                <div class="metric-row" style="padding: var(--space-2) 0; border: none;">
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); flex: 1;">Use of Funds</div>
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: var(--text-primary);">Sales & Marketing 60%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BUSINESS TAB ============ -->
+      <div class="tab-panel" id="tab-business">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Problem Statement</h3></div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-4">
+                <div class="icon-box icon-box-danger" style="flex-shrink: 0;"><i data-lucide="alert-circle" width="18" height="18"></i></div>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">
+                  72% of SMBs fail within 10 years primarily due to poor cash flow management. Traditional accounting tools provide historical data but lack predictive intelligence. CFOs spend 12+ hours per week on manual financial forecasting with 40% error rates.
+                </p>
+              </div>
+              <div class="alert alert-danger">
+                <i data-lucide="trending-down" width="16" height="16" style="flex-shrink: 0;"></i>
+                <div style="font-size: var(--text-xs);">$450B market impact from SMB financial mismanagement annually in the US alone.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Solution</h3></div>
+            <div class="card-body">
+              <div class="flex gap-3 mb-4">
+                <div class="icon-box icon-box-success" style="flex-shrink: 0;"><i data-lucide="lightbulb" width="18" height="18"></i></div>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">
+                  An AI-powered financial intelligence platform that integrates with existing accounting software (QuickBooks, Xero, NetSuite) and banking APIs to provide real-time cash flow forecasting, automated anomaly detection, and actionable CFO recommendations.
+                </p>
+              </div>
+              <div class="alert alert-success">
+                <i data-lucide="check-circle" width="16" height="16" style="flex-shrink: 0;"></i>
+                <div style="font-size: var(--text-xs);">Average customer reduces financial planning time by 78% within 30 days.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Unique Value Proposition</h3></div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div class="flex gap-3 items-start">
+                  <span style="color: var(--brand-400); margin-top: 2px; flex-shrink: 0;"><i data-lucide="zap" width="16" height="16"></i></span>
+                  <div>
+                    <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">AI-First Architecture</div>
+                    <div style="font-size: var(--text-xs); color: var(--text-secondary);">Proprietary ML models trained on $2T+ in anonymized transaction data</div>
+                  </div>
+                </div>
+                <div class="flex gap-3 items-start">
+                  <span style="color: var(--success-400); margin-top: 2px; flex-shrink: 0;"><i data-lucide="plug" width="16" height="16"></i></span>
+                  <div>
+                    <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">40+ Native Integrations</div>
+                    <div style="font-size: var(--text-xs); color: var(--text-secondary);">Seamless connection with existing accounting and banking tools</div>
+                  </div>
+                </div>
+                <div class="flex gap-3 items-start">
+                  <span style="color: var(--warning-400); margin-top: 2px; flex-shrink: 0;"><i data-lucide="clock" width="16" height="16"></i></span>
+                  <div>
+                    <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">< 24hr Time to Value</div>
+                    <div style="font-size: var(--text-xs); color: var(--text-secondary);">Customers see first insights within one business day of signup</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Business Model Canvas</h3></div>
+            <div class="card-body">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+                <div style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: var(--space-3);">
+                  <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brand-400); margin-bottom: var(--space-2);">Revenue Streams</div>
+                  <ul style="font-size: var(--text-xs); color: var(--text-secondary); list-style: none; display: flex; flex-direction: column; gap: 4px;">
+                    <li>→ SaaS subscriptions ($299–$999/mo)</li>
+                    <li>→ Professional services</li>
+                    <li>→ API access (Enterprise)</li>
+                  </ul>
+                </div>
+                <div style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: var(--space-3);">
+                  <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--success-400); margin-bottom: var(--space-2);">Key Channels</div>
+                  <ul style="font-size: var(--text-xs); color: var(--text-secondary); list-style: none; display: flex; flex-direction: column; gap: 4px;">
+                    <li>→ Direct sales (AE team)</li>
+                    <li>→ Accounting firm partnerships</li>
+                    <li>→ Product-led growth</li>
+                  </ul>
+                </div>
+                <div style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: var(--space-3);">
+                  <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warning-400); margin-bottom: var(--space-2);">Key Resources</div>
+                  <ul style="font-size: var(--text-xs); color: var(--text-secondary); list-style: none; display: flex; flex-direction: column; gap: 4px;">
+                    <li>→ Proprietary ML models</li>
+                    <li>→ Banking data partnerships</li>
+                    <li>→ Technical team (15 engineers)</li>
+                  </ul>
+                </div>
+                <div style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: var(--space-3);">
+                  <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--purple-400); margin-bottom: var(--space-2);">Customer Segments</div>
+                  <ul style="font-size: var(--text-xs); color: var(--text-secondary); list-style: none; display: flex; flex-direction: column; gap: 4px;">
+                    <li>→ SMBs ($5M-$50M revenue)</li>
+                    <li>→ CFOs & finance teams</li>
+                    <li>→ Accounting firms</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ MARKET TAB ============ -->
+      <div class="tab-panel" id="tab-market">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Market Size (TAM / SAM / SOM)</h3></div>
+            <div class="card-body">
+              <canvas id="marketChart" height="250"></canvas>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-top: var(--space-5);">
+                <div style="text-align: center;">
+                  <div style="font-size: var(--text-2xl); font-weight: 900; color: var(--text-primary); letter-spacing: -0.03em;">$142B</div>
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">TAM</div>
+                  <div style="font-size: var(--text-xs); color: var(--brand-400);">Global SMB FinTech</div>
+                </div>
+                <div style="text-align: center;">
+                  <div style="font-size: var(--text-2xl); font-weight: 900; color: var(--text-primary); letter-spacing: -0.03em;">$28B</div>
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">SAM</div>
+                  <div style="font-size: var(--text-xs); color: var(--success-400);">US Cash Flow Tools</div>
+                </div>
+                <div style="text-align: center;">
+                  <div style="font-size: var(--text-2xl); font-weight: 900; color: var(--text-primary); letter-spacing: -0.03em;">$2.8B</div>
+                  <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">SOM</div>
+                  <div style="font-size: var(--text-xs); color: var(--warning-400);">5yr Addressable</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Market Trends</h3></div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span style="font-size: var(--text-sm); color: var(--text-secondary);">AI in Finance Adoption</span>
+                    <span style="font-size: var(--text-sm); font-weight: 700; color: var(--success-400);">+67% YoY</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill success" style="width: 82%;"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span style="font-size: var(--text-sm); color: var(--text-secondary);">SMB Digital Finance Adoption</span>
+                    <span style="font-size: var(--text-sm); font-weight: 700; color: var(--brand-400);">+45% YoY</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width: 65%;"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span style="font-size: var(--text-sm); color: var(--text-secondary);">Cloud Accounting Migration</span>
+                    <span style="font-size: var(--text-sm); font-weight: 700; color: var(--warning-400);">+38% YoY</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill warning" style="width: 72%;"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span style="font-size: var(--text-sm); color: var(--text-secondary);">API Banking Open Finance</span>
+                    <span style="font-size: var(--text-sm); font-weight: 700; color: var(--success-400);">+89% YoY</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill success" style="width: 90%;"></div></div>
+                </div>
+              </div>
+
+              <div style="margin-top: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle);">
+                <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-3);">Industry CAGR (2024–2029)</div>
+                <div class="flex items-center gap-3">
+                  <div style="font-size: var(--text-4xl); font-weight: 900; color: var(--success-400); letter-spacing: -0.04em;">24.3%</div>
+                  <div>
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary);">SMB Financial Technology</div>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted);">Source: Gartner 2026 Report</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ COMPETITION TAB ============ -->
+      <div class="tab-panel" id="tab-competition">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Competitor Comparison Matrix</h3>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>AI Forecasting</th>
+                  <th>Real-time Sync</th>
+                  <th>40+ Integrations</th>
+                  <th>SMB Focus</th>
+                  <th>Anomaly Detection</th>
+                  <th>Pricing</th>
+                  <th>Market Share</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background: rgba(99,102,241,0.06);">
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6366F1,#8B5CF6); border-radius: var(--radius-md); font-size:10px;">NT</div><span style="font-weight:700; color:var(--text-primary);">NovaTech ✦</span></div></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td>$299–$999/mo</td>
+                  <td><span class="badge badge-brand">2.1% (growing)</span></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#06B6D4,#0891B2); border-radius: var(--radius-md); font-size:10px;">FW</div><span>Float</span></div></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td>$149–$499/mo</td>
+                  <td><span class="badge badge-neutral">8.4%</span></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#F59E0B,#D97706); border-radius: var(--radius-md); font-size:10px;">CD</div><span>Chargebee</span></div></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td>$299–$2499/mo</td>
+                  <td><span class="badge badge-neutral">12.1%</span></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#EF4444,#DC2626); border-radius: var(--radius-md); font-size:10px;">FD</div><span>Finmark</span></div></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td class="check-icon"><i data-lucide="check-circle" width="16" height="16"></i></td>
+                  <td class="x-icon"><i data-lucide="x-circle" width="16" height="16"></i></td>
+                  <td>$200–$800/mo</td>
+                  <td><span class="badge badge-neutral">5.6%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Competitive Strengths</h3></div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div class="flex gap-3"><i data-lucide="shield-check" width="16" height="16" style="color: var(--success-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Only AI-native solution in the space</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">Competitors rely on rule-based forecasting</div></div></div>
+                <div class="flex gap-3"><i data-lucide="shield-check" width="16" height="16" style="color: var(--success-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">40+ integrations vs avg 12 for competitors</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">Broadest ecosystem connectivity</div></div></div>
+                <div class="flex gap-3"><i data-lucide="shield-check" width="16" height="16" style="color: var(--success-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Real-time anomaly detection</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">Catches problems before they become crises</div></div></div>
+                <div class="flex gap-3"><i data-lucide="shield-check" width="16" height="16" style="color: var(--success-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Superior NRR (180% vs industry 120%)</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">Indicates deep product-market fit</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Competitive Weaknesses</h3></div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div class="flex gap-3"><i data-lucide="alert-triangle" width="16" height="16" style="color: var(--warning-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Low brand recognition (2.1% share)</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">Newer entrant vs established players</div></div></div>
+                <div class="flex gap-3"><i data-lucide="alert-triangle" width="16" height="16" style="color: var(--warning-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Higher pricing than Float</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">May struggle with price-sensitive SMBs</div></div></div>
+                <div class="flex gap-3"><i data-lucide="alert-triangle" width="16" height="16" style="color: var(--warning-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">No international presence yet</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">100% US-only, limiting TAM capture</div></div></div>
+                <div class="flex gap-3"><i data-lucide="alert-triangle" width="16" height="16" style="color: var(--warning-400); flex-shrink: 0; margin-top: 2px;"></i><div><div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">QuickBooks could expand into AI FP&A</div><div style="font-size: var(--text-xs); color: var(--text-secondary);">Large player threat in medium term</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ FINANCIALS TAB ============ -->
+      <div class="tab-panel" id="tab-financials">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-bottom: var(--space-6);">
+          <div class="stat-card"><div class="stat-icon icon-box-success"><i data-lucide="dollar-sign" width="18" height="18"></i></div><div class="stat-value" style="font-size: var(--text-2xl);">$2.4M</div><div class="stat-label">Annual Recurring Revenue</div><div class="stat-change up">↑ 240% YoY</div></div>
+          <div class="stat-card"><div class="stat-icon icon-box-danger"><i data-lucide="flame" width="18" height="18"></i></div><div class="stat-value" style="font-size: var(--text-2xl);">$180K</div><div class="stat-label">Monthly Burn Rate</div><div class="stat-change down">↑ 15% vs last quarter</div></div>
+          <div class="stat-card"><div class="stat-icon icon-box-brand"><i data-lucide="activity" width="18" height="18"></i></div><div class="stat-value" style="font-size: var(--text-2xl);">$2,100</div><div class="stat-label">Customer Acquisition Cost</div><div class="stat-change up">↓ 18% improved</div></div>
+          <div class="stat-card"><div class="stat-icon icon-box-purple"><i data-lucide="repeat" width="18" height="18"></i></div><div class="stat-value" style="font-size: var(--text-2xl);">$18,500</div><div class="stat-label">Lifetime Value (LTV)</div><div class="stat-change up">↑ LTV:CAC = 8.8x</div></div>
+          <div class="stat-card"><div class="stat-icon icon-box-success"><i data-lucide="percent" width="18" height="18"></i></div><div class="stat-value" style="font-size: var(--text-2xl);">78%</div><div class="stat-label">Gross Margin</div><div class="stat-change up">Industry avg: 68%</div></div>
+          <div class="stat-card"><div class="stat-icon icon-box-warning"><i data-lucide="clock" width="18" height="18"></i></div><div class="stat-value" style="font-size: var(--text-2xl);">18 mo</div><div class="stat-label">Current Runway</div><div class="stat-change up">Post-raise: 36 mo</div></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Revenue vs Burn Rate</h3></div>
+            <div class="card-body"><canvas id="burnChart" height="250"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Funding History</h3></div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <div style="position: relative; padding-left: 28px;">
+                  <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; background: var(--brand-500); border-radius: 50;"></div>
+                  <div style="position: absolute; left: 5px; top: 16px; width: 2px; height: 100%; background: var(--border-subtle);"></div>
+                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Pre-Seed — $300K</div>
+                  <div style="font-size: var(--text-xs); color: var(--text-muted);">Q1 2022 · Friends & Family</div>
+                </div>
+                <div style="position: relative; padding-left: 28px;">
+                  <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; background: var(--success-500); border-radius: 50%;"></div>
+                  <div style="position: absolute; left: 5px; top: 16px; width: 2px; height: 100%; background: var(--border-subtle);"></div>
+                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Seed — $1.2M</div>
+                  <div style="font-size: var(--text-xs); color: var(--text-muted);">Q3 2023 · Pioneer Fund, AngelList</div>
+                </div>
+                <div style="position: relative; padding-left: 28px;">
+                  <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; background: var(--warning-500); border-radius: 50%; border: 2px solid var(--warning-400); animation: pulse 2s ease-in-out infinite;"></div>
+                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Series A — $5M (Raising)</div>
+                  <div style="font-size: var(--text-xs); color: var(--text-muted);">Q3 2026 · Current round · 40% committed</div>
+                  <span class="badge badge-warning badge-dot" style="margin-top: 6px;">Actively Raising</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ FOUNDERS TAB ============ -->
+      <div class="tab-panel" id="tab-founders">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+          <div class="card">
+            <div class="card-body">
+              <div class="flex gap-4 mb-5">
+                <div class="avatar avatar-xl" style="background: linear-gradient(135deg,#6366F1,#8B5CF6);">JC</div>
+                <div>
+                  <div style="font-size: var(--text-xl); font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em;">Jordan Chen</div>
+                  <div style="font-size: var(--text-sm); color: var(--brand-400); font-weight: 600;">CEO & Co-Founder</div>
+                  <div style="display: flex; gap: var(--space-2); margin-top: var(--space-2);">
+                    <span class="badge badge-neutral">Ex-Stripe</span>
+                    <span class="badge badge-neutral">Stanford MBA</span>
+                  </div>
+                </div>
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-4);">
+                7 years at Stripe leading product for SMB financial tools. Built and shipped features used by 2M+ businesses. Stanford MBA, CS undergrad at MIT. Previous exit: FinanceFlow acquired by Intuit for $45M in 2021.
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Experience Score</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill success" style="width: 91%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">91</span></div></div>
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">LinkedIn Score</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill" style="width: 88%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--brand-400);">88</span></div></div>
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Execution Score</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill success" style="width: 94%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">94</span></div></div>
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Domain Expertise</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill success" style="width: 96%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">96</span></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="flex gap-4 mb-5">
+                <div class="avatar avatar-xl" style="background: linear-gradient(135deg,#10B981,#059669);">AK</div>
+                <div>
+                  <div style="font-size: var(--text-xl); font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em;">Amara Kone</div>
+                  <div style="font-size: var(--text-sm); color: var(--success-400); font-weight: 600;">CTO & Co-Founder</div>
+                  <div style="display: flex; gap: var(--space-2); margin-top: var(--space-2);">
+                    <span class="badge badge-neutral">Ex-Plaid</span>
+                    <span class="badge badge-neutral">CMU ML PhD</span>
+                  </div>
+                </div>
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-4);">
+                5 years at Plaid leading ML infrastructure for financial data APIs. PhD in Machine Learning from Carnegie Mellon. Published 12 papers on financial time-series forecasting. Holds 3 patents in AI anomaly detection.
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Technical Score</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill success" style="width: 97%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">97</span></div></div>
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Research Impact</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill" style="width: 89%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--brand-400);">89</span></div></div>
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Build Score</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill success" style="width: 92%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">92</span></div></div>
+                <div><div style="font-size: var(--text-xs); color: var(--text-muted);">Domain Expertise</div>
+                  <div class="flex items-center gap-2 mt-1"><div class="progress-bar" style="flex:1;"><div class="progress-fill success" style="width: 95%;"></div></div><span style="font-size: var(--text-xs); font-weight: 700; color: var(--success-400);">95</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ RISKS TAB ============ -->
+      <div class="tab-panel" id="tab-risks">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Risk Assessment</h3></div>
+            <div class="card-body">
+              <div class="risk-bar">
+                <div style="width: 130px; font-size: var(--text-sm); color: var(--text-secondary);">Market Risk</div>
+                <div style="flex: 1;"><div class="progress-bar"><div class="progress-fill warning" style="width: 35%;"></div></div></div>
+                <span class="badge badge-success" style="flex-shrink:0;">Low</span>
+              </div>
+              <div class="risk-bar">
+                <div style="width: 130px; font-size: var(--text-sm); color: var(--text-secondary);">Financial Risk</div>
+                <div style="flex: 1;"><div class="progress-bar"><div class="progress-fill warning" style="width: 48%;"></div></div></div>
+                <span class="badge badge-warning" style="flex-shrink:0;">Medium</span>
+              </div>
+              <div class="risk-bar">
+                <div style="width: 130px; font-size: var(--text-sm); color: var(--text-secondary);">Technology Risk</div>
+                <div style="flex: 1;"><div class="progress-bar"><div class="progress-fill success" style="width: 25%;"></div></div></div>
+                <span class="badge badge-success" style="flex-shrink:0;">Low</span>
+              </div>
+              <div class="risk-bar">
+                <div style="width: 130px; font-size: var(--text-sm); color: var(--text-secondary);">Legal Risk</div>
+                <div style="flex: 1;"><div class="progress-bar"><div class="progress-fill warning" style="width: 40%;"></div></div></div>
+                <span class="badge badge-warning" style="flex-shrink:0;">Medium</span>
+              </div>
+              <div class="risk-bar">
+                <div style="width: 130px; font-size: var(--text-sm); color: var(--text-secondary);">Execution Risk</div>
+                <div style="flex: 1;"><div class="progress-bar"><div class="progress-fill success" style="width: 30%;"></div></div></div>
+                <span class="badge badge-success" style="flex-shrink:0;">Low</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Risk Details</h3></div>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: var(--space-3);">
+              <div class="alert alert-warning">
+                <i data-lucide="alert-triangle" width="16" height="16" style="flex-shrink:0;"></i>
+                <div><div style="font-weight:700; font-size:var(--text-xs); margin-bottom:3px;">Financial: Burn Rate Increasing</div><div style="font-size:var(--text-xs);">Monthly burn increased 15% QoQ. At current rate, 18-month runway could compress if ARR growth slows.</div></div>
+              </div>
+              <div class="alert alert-warning">
+                <i data-lucide="alert-triangle" width="16" height="16" style="flex-shrink:0;"></i>
+                <div><div style="font-weight:700; font-size:var(--text-xs); margin-bottom:3px;">Legal: Banking Data Access</div><div style="font-size:var(--text-xs);">Regulatory changes to open banking APIs (PSD3) could impact data access in future international expansion.</div></div>
+              </div>
+              <div class="alert alert-info">
+                <i data-lucide="info" width="16" height="16" style="flex-shrink:0;"></i>
+                <div><div style="font-weight:700; font-size:var(--text-xs); margin-bottom:3px;">Market: Large Player Competition</div><div style="font-size:var(--text-xs);">QuickBooks and Xero could add AI forecasting features. However, switching costs and NRR of 180% suggest strong retention.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SWOT -->
+        <div class="card">
+          <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">SWOT Analysis</h3></div>
+          <div class="card-body">
+            <div class="swot-grid">
+              <div class="swot-cell strengths">
+                <div class="swot-label" style="color: var(--success-400);"><i data-lucide="shield-check" width="14" height="14"></i> Strengths</div>
+                <ul class="swot-items">
+                  <li>Only AI-native FP&A solution for SMBs</li>
+                  <li>World-class founding team (Stripe + Plaid)</li>
+                  <li>180% NRR — exceptional product-market fit</li>
+                  <li>40+ native integrations</li>
+                </ul>
+              </div>
+              <div class="swot-cell weaknesses">
+                <div class="swot-label" style="color: var(--danger-400);"><i data-lucide="alert-circle" width="14" height="14"></i> Weaknesses</div>
+                <ul class="swot-items">
+                  <li>Low brand recognition (2.1% market share)</li>
+                  <li>US-only, no international expansion yet</li>
+                  <li>Increasing burn rate vs. last quarter</li>
+                  <li>Higher price point than some competitors</li>
+                </ul>
+              </div>
+              <div class="swot-cell opportunities">
+                <div class="swot-label" style="color: var(--brand-300);"><i data-lucide="trending-up" width="14" height="14"></i> Opportunities</div>
+                <ul class="swot-items">
+                  <li>Global SMB FinTech market at $142B TAM</li>
+                  <li>24.3% CAGR in AI financial software</li>
+                  <li>Open banking regulation driving API adoption</li>
+                  <li>Accounting firm partnership channel untapped</li>
+                </ul>
+              </div>
+              <div class="swot-cell threats">
+                <div class="swot-label" style="color: var(--warning-400);"><i data-lucide="alert-triangle" width="14" height="14"></i> Threats</div>
+                <ul class="swot-items">
+                  <li>QuickBooks / Xero could launch AI features</li>
+                  <li>Regulatory changes to open banking APIs</li>
+                  <li>Economic downturn reducing SMB software spend</li>
+                  <li>Enterprise players like Workday moving downmarket</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ RECOMMENDATION TAB ============ -->
+      <div class="tab-panel" id="tab-recommendation">
+        <div class="recommendation-card mb-6">
+          <div class="invest-badge strong" style="margin: 0 auto var(--space-4); width: fit-content;">
+            <i data-lucide="check-circle" width="20" height="20"></i>
+            AI Recommendation: STRONG INVEST
+          </div>
+          <h2 style="font-size: var(--text-2xl); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: var(--space-4);">
+            NovaTech Solutions is a compelling Series A investment
+          </h2>
+          <p style="font-size: var(--text-base); color: var(--text-secondary); line-height: var(--leading-relaxed); max-width: 700px; margin: 0 auto var(--space-6);">
+            Based on comprehensive analysis across 12 dimensions, NovaTech Solutions scores 85/100 — placing it in the top 8% of all FinTech Series A companies in our database. The combination of a world-class team, exceptional NRR, and massive market opportunity makes this a high-conviction investment opportunity.
+          </p>
+          <div class="flex gap-3 justify-center">
+            <a href="memo.html" class="btn btn-success btn-lg">
+              <i data-lucide="file-text" width="18" height="18"></i>
+              View Full Investment Memo
+            </a>
+            <button class="btn btn-secondary btn-lg" onclick="Toast.success('Downloaded!', 'Due Diligence Report saved as PDF.')">
+              <i data-lucide="download" width="18" height="18"></i>
+              Download Due Diligence
+            </button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Investment Thesis</h3></div>
+            <div class="card-body">
+              <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-4);">NovaTech is positioned to become the de-facto AI financial intelligence layer for SMBs. The combination of deep integrations, AI-native architecture, and an exceptional team creates a defensible moat.</p>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div class="flex gap-3"><i data-lucide="check-circle" width="16" height="16" style="color:var(--success-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">Top-decile team with relevant domain expertise and prior exit</span></div>
+                <div class="flex gap-3"><i data-lucide="check-circle" width="16" height="16" style="color:var(--success-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">180% NRR indicates deep product-market fit and strong expansion revenue</span></div>
+                <div class="flex gap-3"><i data-lucide="check-circle" width="16" height="16" style="color:var(--success-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">$142B TAM with 24.3% CAGR and favorable regulatory tailwinds</span></div>
+                <div class="flex gap-3"><i data-lucide="check-circle" width="16" height="16" style="color:var(--success-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">8.8x LTV:CAC ratio well above Series A benchmark of 3x</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Key Due Diligence Points</h3></div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div class="flex gap-3"><i data-lucide="search" width="16" height="16" style="color:var(--warning-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">Validate NRR calculation methodology with CPA-reviewed data</span></div>
+                <div class="flex gap-3"><i data-lucide="search" width="16" height="16" style="color:var(--warning-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">Review banking API partner agreements and data rights</span></div>
+                <div class="flex gap-3"><i data-lucide="search" width="16" height="16" style="color:var(--warning-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">Technical architecture review of ML pipeline and data security</span></div>
+                <div class="flex gap-3"><i data-lucide="search" width="16" height="16" style="color:var(--warning-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">Reference checks on Jordan Chen's prior exit at FinanceFlow</span></div>
+                <div class="flex gap-3"><i data-lucide="search" width="16" height="16" style="color:var(--warning-400); flex-shrink:0; margin-top:2px;"></i><span style="font-size:var(--text-sm); color:var(--text-secondary);">Confirm customer churn rate and cohort-level NRR breakdown</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /app-content -->
+  </main>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script>
+lucide.createIcons();
+
+// Tab switching
+function switchTab(name, btn) {
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  initTabCharts(name);
+}
+
+// Score circle
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const circle = document.getElementById('score-circle');
+    if (circle) {
+      const score = 85;
+      const r = 80;
+      const circumference = 2 * Math.PI * r;
+      const offset = circumference - (score / 100) * circumference;
+      circle.style.strokeDashoffset = offset;
+    }
+
+    // Animate progress bars on overview tab
+    document.querySelectorAll('.progress-fill[data-width]').forEach(el => {
+      const w = el.getAttribute('data-width');
+      animateProgress(el, parseFloat(w));
+    });
+  }, 400);
+
+  // Initialize overview charts
+  initTabCharts('overview');
+});
+
+function animateProgress(el, target, duration = 1000) {
+  let start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    const progress = Math.min((ts - start) / duration, 1);
+    el.style.width = (target * (1 - Math.pow(1 - progress, 3))) + '%';
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+let chartsInitialized = {};
+
+function initTabCharts(tab) {
+  if (chartsInitialized[tab]) return;
+  chartsInitialized[tab] = true;
+
+  const gridColor = 'rgba(255,255,255,0.04)';
+  const tickColor = '#64748B';
+  const fontFamily = 'Inter, sans-serif';
+
+  if (tab === 'overview') {
+    // Revenue Chart
+    const ctx1 = document.getElementById('revenueChart');
+    if (ctx1) new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug*','Sep*','Oct*','Nov*','Dec*','Jan*'],
+        datasets: [{
+          label: 'Actual ARR ($K)',
+          data: [600,720,850,1000,1200,1420,1640,1850,2000,2150,2280,2400,null,null,null,null,null,null],
+          borderColor: '#6366F1', backgroundColor: 'rgba(99,102,241,0.08)',
+          fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#6366F1',
+        },{
+          label: 'Projected ARR ($K)',
+          data: [null,null,null,null,null,null,null,null,null,null,null,2400,2700,3050,3400,3800,4200,4700],
+          borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.05)',
+          borderDash: [5,5], fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#10B981',
+        }]
+      },
+      options: {
+        responsive: true, interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { labels: { color: tickColor, font: { family: fontFamily, size: 11 } } } },
+        scales: {
+          x: { ticks: { color: tickColor, font: { family: fontFamily, size: 10 } }, grid: { color: gridColor } },
+          y: { ticks: { color: tickColor, font: { family: fontFamily, size: 10 }, callback: v => '$' + v + 'K' }, grid: { color: gridColor } }
+        }
+      }
+    });
+
+    // Radar Chart
+    const ctx2 = document.getElementById('radarChart');
+    if (ctx2) new Chart(ctx2, {
+      type: 'radar',
+      data: {
+        labels: ['Market', 'Team', 'Product', 'Traction', 'Finance', 'Moat', 'Exit'],
+        datasets: [{
+          label: 'NovaTech',
+          data: [92, 88, 84, 90, 72, 78, 85],
+          borderColor: '#6366F1', backgroundColor: 'rgba(99,102,241,0.15)',
+          pointBackgroundColor: '#6366F1', pointRadius: 4, borderWidth: 2,
+        },{
+          label: 'Industry Avg',
+          data: [65, 62, 60, 58, 65, 60, 62],
+          borderColor: '#475569', backgroundColor: 'rgba(71,85,105,0.08)',
+          pointBackgroundColor: '#475569', pointRadius: 3, borderWidth: 1, borderDash: [3,3],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: tickColor, font: { family: fontFamily, size: 10 } } } },
+        scales: {
+          r: {
+            ticks: { color: tickColor, font: { family: fontFamily, size: 9 }, backdropColor: 'transparent' },
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            pointLabels: { color: tickColor, font: { family: fontFamily, size: 10 } },
+            min: 0, max: 100,
+          }
+        }
+      }
+    });
+  }
+
+  if (tab === 'market') {
+    const ctx = document.getElementById('marketChart');
+    if (ctx) new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['TAM ($142B)', 'SAM ($28B)', 'SOM ($2.8B)'],
+        datasets: [{
+          data: [142, 28, 2.8],
+          backgroundColor: ['rgba(99,102,241,0.7)', 'rgba(16,185,129,0.7)', 'rgba(245,158,11,0.7)'],
+          borderColor: ['#6366F1', '#10B981', '#F59E0B'],
+          borderWidth: 1, borderRadius: 8,
+        }]
+      },
+      options: {
+        responsive: true, indexAxis: 'y',
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' $' + ctx.raw + 'B' } } },
+        scales: {
+          x: { ticks: { color: tickColor, font: { family: fontFamily, size: 10 }, callback: v => '$' + v + 'B' }, grid: { color: gridColor } },
+          y: { ticks: { color: tickColor, font: { family: fontFamily, size: 11 } }, grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  if (tab === 'financials') {
+    const ctx = document.getElementById('burnChart');
+    if (ctx) new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Q1 2025','Q2 2025','Q3 2025','Q4 2025','Q1 2026','Q2 2026'],
+        datasets: [{
+          label: 'Monthly Revenue ($K)',
+          data: [95, 130, 165, 200, 215, 230],
+          backgroundColor: 'rgba(16,185,129,0.7)', borderColor: '#10B981', borderWidth: 1, borderRadius: 4,
+        },{
+          label: 'Monthly Burn ($K)',
+          data: [120, 130, 145, 155, 165, 180],
+          backgroundColor: 'rgba(239,68,68,0.5)', borderColor: '#EF4444', borderWidth: 1, borderRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true, interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { labels: { color: tickColor, font: { family: fontFamily, size: 11 } } } },
+        scales: {
+          x: { ticks: { color: tickColor, font: { family: fontFamily, size: 10 } }, grid: { color: gridColor } },
+          y: { ticks: { color: tickColor, font: { family: fontFamily, size: 10 }, callback: v => '$' + v + 'K' }, grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Application\AIAugmentedPitchAnalyzer.Application.csproj" />
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Domain\AIAugmentedPitchAnalyzer.Domain.csproj" />
+    <ProjectReference Include="..\AIAugmentedPitchAnalyzer.Persistence\AIAugmentedPitchAnalyzer.Persistence.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.31.1" />
+    <PackageReference Include="UglyToad.PdfPig" Version="1.7.0-custom-5" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>

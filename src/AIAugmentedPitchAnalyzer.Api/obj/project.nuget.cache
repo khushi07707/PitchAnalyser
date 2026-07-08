@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "dgSpecHash": "cRxwMejMzA0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Nishtha Mathur\\OneDrive - UPES\\Desktop\\AI Augmented Pitch Analyser\\src\\AIAugmentedPitchAnalyzer.Api\\AIAugmentedPitchAnalyzer.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\documentformat.openxml\\3.0.0\\documentformat.openxml.3.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\documentformat.openxml.framework\\3.0.0\\documentformat.openxml.framework.3.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.6\\microsoft.aspnetcore.authentication.jwtbearer.8.0.6.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.5\\microsoft.aspnetcore.openapi.8.0.5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.8\\microsoft.entityframeworkcore.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.8\\microsoft.entityframeworkcore.abstractions.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.8\\microsoft.entityframeworkcore.analyzers.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.8\\microsoft.entityframeworkcore.relational.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.0\\microsoft.extensions.caching.memory.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.logging\\8.0.0\\microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.1.2\\microsoft.identitymodel.abstractions.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.1.2\\microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.logging\\7.1.2\\microsoft.identitymodel.logging.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.protocols\\7.1.2\\microsoft.identitymodel.protocols.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\7.1.2\\microsoft.identitymodel.protocols.openidconnect.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.1.2\\microsoft.identitymodel.tokens.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\npgsql\\8.0.4\\npgsql.8.0.4.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.8\\npgsql.entityframeworkcore.postgresql.8.0.8.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.1.2\\system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\system.io.packaging\\8.0.0\\system.io.packaging.8.0.0.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig\\1.7.0-custom-5\\uglytoad.pdfpig.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.core\\1.7.0-custom-5\\uglytoad.pdfpig.core.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.fonts\\1.7.0-custom-5\\uglytoad.pdfpig.fonts.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.tokenization\\1.7.0-custom-5\\uglytoad.pdfpig.tokenization.1.7.0-custom-5.nupkg.sha512",
+    "C:\\Users\\Nishtha Mathur\\.nuget\\packages\\uglytoad.pdfpig.tokens\\1.7.0-custom-5\\uglytoad.pdfpig.tokens.1.7.0-custom-5.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "AIAugmentedPitchAnalyzer.Infrastructure depends on System.IdentityModel.Tokens.Jwt (>= 6.31.1) but System.IdentityModel.Tokens.Jwt 6.31.1 was not found. An approximate best match of System.IdentityModel.Tokens.Jwt 6.32.0 was resolved.",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}

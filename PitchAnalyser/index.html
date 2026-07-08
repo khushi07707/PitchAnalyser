@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PitchPilotAI — AI-Powered Startup Pitch Deck Analysis for Investors</title>
+  <meta name="description" content="Analyze startup pitch decks with AI in minutes. Get VC scores, investment memos, risk assessments, and due diligence reports instantly. Trusted by top investors worldwide." />
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* Landing-specific styles */
+    .nav-links-group { display: flex; align-items: center; gap: var(--space-1); }
+    
+    .faq-item { border-bottom: 1px solid var(--border-subtle); }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-5) 0; cursor: pointer; font-weight: 600;
+      color: var(--text-primary); font-size: var(--text-base); gap: var(--space-4);
+      transition: color var(--transition-fast);
+    }
+    .faq-question:hover { color: var(--brand-300); }
+    .faq-question .faq-icon { flex-shrink: 0; transition: transform var(--transition-base); color: var(--text-muted); }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--brand-400); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer-inner { padding-bottom: var(--space-5); color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-relaxed); }
+    
+    .integration-logo {
+      padding: var(--space-3) var(--space-5);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex; align-items: center; gap: var(--space-2);
+      transition: all var(--transition-fast);
+    }
+    .integration-logo:hover { border-color: var(--border-default); color: var(--text-secondary); }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 6px 14px; border-radius: var(--radius-full);
+      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25);
+      font-size: var(--text-xs); font-weight: 700; color: var(--brand-300);
+      letter-spacing: 0.04em; margin-bottom: var(--space-6);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--brand-400);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .mock-dashboard {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl), 0 0 80px rgba(99,102,241,0.2);
+    }
+
+    .mock-topbar {
+      height: 44px; background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex; align-items: center; padding: 0 var(--space-4); gap: var(--space-2);
+    }
+
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    .mock-content { padding: var(--space-5); }
+
+    .score-ring-preview {
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 6px solid transparent;
+      background: conic-gradient(#10B981 0deg 306deg, var(--bg-elevated) 306deg 360deg);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+
+    .score-ring-preview::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: var(--bg-card);
+    }
+
+    .score-ring-value {
+      position: relative;
+      font-size: var(--text-lg);
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .how-connector {
+      width: 2px; height: 48px; background: var(--gradient-brand);
+      margin: 0 auto; opacity: 0.3; border-radius: 1px;
+    }
+
+    .glow-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-6);
+      transition: all 0.3s ease;
+    }
+    .glow-card:hover {
+      border-color: rgba(99,102,241,0.35);
+      box-shadow: 0 0 40px rgba(99,102,241,0.12);
+      transform: translateY(-3px);
+    }
+
+    .scroll-indicator {
+      position: absolute; bottom: var(--space-8); left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+      color: var(--text-muted); font-size: var(--text-xs);
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    .cta-section {
+      padding: var(--space-24) 0;
+      background: linear-gradient(180deg, var(--bg-base) 0%, rgba(99,102,241,0.04) 50%, var(--bg-base) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links-group { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======================== NAVBAR ======================== -->
+<nav class="landing-nav">
+  <div class="landing-nav-inner">
+    <!-- Logo -->
+    <a href="index.html" class="navbar-brand">
+      <div class="navbar-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      PitchPilot<span style="color: var(--brand-400);">AI</span>
+    </a>
+
+    <!-- Nav Links -->
+    <ul class="navbar-nav nav-links-group">
+      <li><a href="#features" class="navbar-link">Features</a></li>
+      <li><a href="#solutions" class="navbar-link">Solutions</a></li>
+      <li><a href="pricing.html" class="navbar-link">Pricing</a></li>
+      <li><a href="#about" class="navbar-link">About</a></li>
+      <li><a href="help.html" class="navbar-link">Contact</a></li>
+    </ul>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-3">
+      <button data-theme-toggle class="btn btn-ghost btn-icon" title="Toggle theme" id="theme-btn">
+        <span class="icon-moon"><i data-lucide="moon" width="18" height="18"></i></span>
+        <span class="icon-sun" style="display:none"><i data-lucide="sun" width="18" height="18"></i></span>
+      </button>
+      <a href="login.html" class="btn btn-ghost btn-sm">Log in</a>
+      <a href="register.html" class="btn btn-primary btn-sm">
+        Start Free
+        <i data-lucide="arrow-right" width="14" height="14"></i>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero-section" style="padding-top: 80px; min-height: calc(100vh - 72px);">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb-1"></div>
+  <div class="hero-orb-2"></div>
+
+  <div class="hero-content" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+    <!-- Left: Copy -->
+    <div class="hero-left animate-fade-in-up">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        ✦ New: AI Investment Memo Generator is Live
+      </div>
+
+      <h1 class="hero-title">
+        Your AI Co-Pilot for
+        <span class="text-gradient">Smarter Investment</span>
+        Decisions
+      </h1>
+
+      <p class="hero-subtitle">
+        Analyze startup pitch decks in minutes with enterprise-grade AI. Get VC scores, risk reports, financial analysis, and investment memos — automatically.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="upload.html" class="btn btn-primary btn-xl">
+          <i data-lucide="upload-cloud" width="20" height="20"></i>
+          Analyze Pitch Deck
+        </a>
+        <a href="#demo" class="btn btn-secondary btn-xl">
+          <i data-lucide="play-circle" width="20" height="20"></i>
+          Watch Demo
+        </a>
+      </div>
+
+      <div class="hero-trust">
+        <div class="flex" style="gap: 0;">
+          <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #6366F1, #8B5CF6); margin-right: -8px; border: 2px solid var(--bg-base); font-size:11px;">JR</div>
+          <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #10B981, #059669); margin-right: -8px; border: 2px solid var(--bg-base); font-size:11px;">SK</div>
+          <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #F59E0B, #D97706); margin-right: -8px; border: 2px solid var(--bg-base); font-size:11px;">AM</div>
+          <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #EF4444, #DC2626); border: 2px solid var(--bg-base); font-size:11px;">+</div>
+        </div>
+        <div>
+          <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">12,000+ investors trust PitchPilotAI</div>
+          <div style="font-size: var(--text-xs); color: var(--text-muted);">from Sequoia, a16z, Y Combinator and more</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Mock Dashboard -->
+    <div class="hero-right animate-fade-in-right delay-300" style="position: relative;">
+      <div class="mock-dashboard" style="animation: float 6s ease-in-out infinite;">
+        <div class="mock-topbar">
+          <div class="mock-dot" style="background:#EF4444"></div>
+          <div class="mock-dot" style="background:#F59E0B"></div>
+          <div class="mock-dot" style="background:#10B981"></div>
+          <div style="flex:1; margin-left: var(--space-3);">
+            <div class="skeleton" style="height: 18px; width: 180px; border-radius: 4px;"></div>
+          </div>
+        </div>
+        <div class="mock-content">
+          <!-- Startup info row -->
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div style="font-size: var(--text-base); font-weight: 800; color: var(--text-primary);">NovaTech Solutions</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">Series A · FinTech · San Francisco</div>
+            </div>
+            <span class="badge badge-success badge-dot">Strong Invest</span>
+          </div>
+
+          <!-- Score + Stats row -->
+          <div class="flex gap-4 mb-4">
+            <div class="score-ring-preview">
+              <span class="score-ring-value">85</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 11px; color: var(--text-muted);">Market Opportunity</span>
+                  <span style="font-size: 11px; color: var(--success-400);">92%</span>
+                </div>
+                <div class="progress-bar sm"><div class="progress-fill success" style="width: 92%;"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 11px; color: var(--text-muted);">Team Strength</span>
+                  <span style="font-size: 11px; color: var(--brand-400);">78%</span>
+                </div>
+                <div class="progress-bar sm"><div class="progress-fill" style="width: 78%;"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 11px; color: var(--text-muted);">Financial Health</span>
+                  <span style="font-size: 11px; color: var(--warning-400);">64%</span>
+                </div>
+                <div class="progress-bar sm"><div class="progress-fill warning" style="width: 64%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini chart -->
+          <div style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: var(--space-3); margin-bottom: var(--space-3);">
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-2);">Revenue Trajectory</div>
+            <svg viewBox="0 0 280 60" style="width: 100%; height: 50px;">
+              <defs>
+                <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6366F1" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 50 L40 42 L80 35 L120 28 L160 18 L200 12 L240 6 L280 2 L280 60 L0 60 Z" fill="url(#revGrad)"/>
+              <path d="M0 50 L40 42 L80 35 L120 28 L160 18 L200 12 L240 6 L280 2" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="280" cy="2" r="3" fill="#6366F1"/>
+            </svg>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex gap-2 flex-wrap">
+            <span class="badge badge-brand">AI Analysis Complete</span>
+            <span class="badge badge-success">Due Diligence Ready</span>
+            <span class="badge badge-neutral">PDF Report</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating badges -->
+      <div class="hero-floating-1" style="top: -20px; right: -30px; min-width: 160px;">
+        <div class="flex items-center gap-2">
+          <div style="width: 32px; height: 32px; background: rgba(16,185,129,0.15); border-radius: var(--radius-md); display: flex; align-items:center; justify-content:center; color: var(--success-400);">
+            <i data-lucide="trending-up" width="16" height="16"></i>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted);">VC Score</div>
+            <div style="font-size: var(--text-sm); font-weight: 800; color: var(--success-400);">85 / 100</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-floating-2" style="bottom: 0px; left: -30px; min-width: 180px;">
+        <div class="flex items-center gap-2">
+          <div style="width: 32px; height: 32px; background: rgba(99,102,241,0.15); border-radius: var(--radius-md); display: flex; align-items:center; justify-content:center; color: var(--brand-400);">
+            <i data-lucide="zap" width="16" height="16"></i>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted);">Analysis Ready</div>
+            <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">in 47 seconds</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator">
+    <span>Scroll to explore</span>
+    <i data-lucide="chevron-down" width="16" height="16"></i>
+  </div>
+</section>
+
+<!-- ======================== STATS ======================== -->
+<section class="stats-section" id="about">
+  <div class="stats-inner">
+    <div class="text-center animate-on-scroll">
+      <div class="stat-number" data-counter="48200" data-suffix="+">0+</div>
+      <div class="stat-desc">Pitch Decks Analyzed</div>
+    </div>
+    <div class="text-center animate-on-scroll">
+      <div class="stat-number" data-counter="94" data-suffix="%">0%</div>
+      <div class="stat-desc">Analysis Accuracy</div>
+    </div>
+    <div class="text-center animate-on-scroll">
+      <div class="stat-number" data-counter="12000" data-suffix="+">0+</div>
+      <div class="stat-desc">Active Investors</div>
+    </div>
+    <div class="text-center animate-on-scroll">
+      <div class="stat-number" data-counter="89000" data-suffix="+">0+</div>
+      <div class="stat-desc">Reports Generated</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FEATURES ======================== -->
+<section class="features-section" id="features">
+  <div class="features-section-inner">
+    <div class="text-center mb-16">
+      <div class="section-eyebrow" style="margin: 0 auto var(--space-4);">✦ Powerful Features</div>
+      <h2 class="section-title">Everything You Need to Make Smarter Bets</h2>
+      <p class="section-subtitle" style="margin: 0 auto;">From raw pitch deck to investment-grade analysis — PitchPilotAI handles the heavy lifting so you can focus on what matters.</p>
+    </div>
+
+    <div class="feature-grid stagger-children">
+      <!-- Feature 1 -->
+      <div class="feature-card glow-card">
+        <div class="icon-box icon-box-lg icon-box-brand mb-4">
+          <i data-lucide="brain" width="24" height="24"></i>
+        </div>
+        <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); letter-spacing: -0.02em;">AI Startup Analysis</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Deep AI analysis of every slide — problem, solution, business model, market size, and founder profiles extracted automatically.</p>
+        <div class="flex gap-2 mt-4 flex-wrap">
+          <span class="badge badge-brand">NLP Processing</span>
+          <span class="badge badge-neutral">OCR Extraction</span>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card glow-card">
+        <div class="icon-box icon-box-lg icon-box-success mb-4">
+          <i data-lucide="target" width="24" height="24"></i>
+        </div>
+        <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); letter-spacing: -0.02em;">VC Investment Score</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Proprietary scoring algorithm trained on 10,000+ funded startups. Get a 0–100 investment readiness score with detailed breakdown.</p>
+        <div class="flex gap-2 mt-4 flex-wrap">
+          <span class="badge badge-success">0–100 Score</span>
+          <span class="badge badge-neutral">Benchmarked</span>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card glow-card">
+        <div class="icon-box icon-box-lg icon-box-warning mb-4">
+          <i data-lucide="shield-alert" width="24" height="24"></i>
+        </div>
+        <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); letter-spacing: -0.02em;">Risk Detection</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">AI-powered risk assessment across market, legal, financial, technology, and execution dimensions. Red flags highlighted automatically.</p>
+        <div class="flex gap-2 mt-4 flex-wrap">
+          <span class="badge badge-warning">5 Risk Vectors</span>
+          <span class="badge badge-neutral">Auto Flagging</span>
+        </div>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card glow-card">
+        <div class="icon-box icon-box-lg icon-box-purple mb-4">
+          <i data-lucide="bar-chart-3" width="24" height="24"></i>
+        </div>
+        <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); letter-spacing: -0.02em;">Competitor Intelligence</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Automatic competitor identification and feature comparison matrix. Understand the competitive moat before you write a check.</p>
+        <div class="flex gap-2 mt-4 flex-wrap">
+          <span class="badge badge-purple">Competitive Map</span>
+          <span class="badge badge-neutral">Feature Matrix</span>
+        </div>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card glow-card">
+        <div class="icon-box icon-box-lg icon-box-cyan mb-4">
+          <i data-lucide="dollar-sign" width="24" height="24"></i>
+        </div>
+        <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); letter-spacing: -0.02em;">Financial Insights</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Extract and validate revenue models, burn rates, CAC, LTV, and funding history. Financial red flags detected in seconds.</p>
+        <div class="flex gap-2 mt-4 flex-wrap">
+          <span class="badge badge-cyan">Burn Rate</span>
+          <span class="badge badge-neutral">LTV / CAC</span>
+        </div>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card glow-card">
+        <div class="icon-box icon-box-lg icon-box-danger mb-4" style="background: rgba(239,68,68,0.15); color: var(--danger-400);">
+          <i data-lucide="file-text" width="24" height="24"></i>
+        </div>
+        <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); letter-spacing: -0.02em;">Investment Memo</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Generate investment-grade memos with executive summary, thesis, SWOT, and recommendation. Export as PDF or Word instantly.</p>
+        <div class="flex gap-2 mt-4 flex-wrap">
+          <span class="badge badge-danger">PDF Export</span>
+          <span class="badge badge-neutral">Word Export</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== HOW IT WORKS ======================== -->
+<section class="how-section" id="solutions">
+  <div class="how-section-inner">
+    <div class="text-center mb-16">
+      <div class="section-eyebrow" style="margin: 0 auto var(--space-4);">⚡ How It Works</div>
+      <h2 class="section-title">From Pitch Deck to Investment Decision in 4 Steps</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); position: relative;">
+      <!-- Connecting line -->
+      <div style="position: absolute; top: 28px; left: calc(12.5% + 28px); right: calc(12.5% + 28px); height: 2px; background: linear-gradient(90deg, #6366F1, #8B5CF6, #A855F7, #6366F1); opacity: 0.3; border-radius: 1px;"></div>
+
+      <div class="text-center">
+        <div class="how-number" style="margin: 0 auto var(--space-4);">1</div>
+        <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2);">Upload Pitch Deck</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Drag & drop your PDF or PPT. Supports up to 200 slides.</p>
+      </div>
+
+      <div class="text-center">
+        <div class="how-number" style="margin: 0 auto var(--space-4);">2</div>
+        <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2);">AI Analysis</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Advanced AI extracts, validates, and scores every dimension in under 60 seconds.</p>
+      </div>
+
+      <div class="text-center">
+        <div class="how-number" style="margin: 0 auto var(--space-4);">3</div>
+        <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2);">Review Dashboard</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Explore interactive charts, scores, and insights across 8 analysis tabs.</p>
+      </div>
+
+      <div class="text-center">
+        <div class="how-number" style="margin: 0 auto var(--space-4);">4</div>
+        <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2);">Download Report</h3>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">Export professional investment memos and due diligence reports instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== TESTIMONIALS ======================== -->
+<section class="testimonials-section" id="testimonials">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--space-8);">
+    <div class="text-center mb-16">
+      <div class="section-eyebrow" style="margin: 0 auto var(--space-4);">💬 Testimonials</div>
+      <h2 class="section-title">Trusted by the World's Best Investors</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">PitchPilotAI has completely transformed how we evaluate early-stage deals. What used to take our team 3 days now takes 45 minutes. The VC score accuracy is remarkable.</p>
+        <div class="flex items-center gap-3">
+          <div class="avatar avatar-md" style="background: linear-gradient(135deg, #6366F1, #8B5CF6);">JR</div>
+          <div>
+            <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">James Richardson</div>
+            <div style="font-size: var(--text-xs); color: var(--text-muted);">Partner, Apex Ventures</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card" style="border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.04);">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">The competitor intelligence feature alone saved us from two bad investments in Q1. The SWOT matrix and risk detection are genuinely impressive. This is like having a senior analyst on call 24/7.</p>
+        <div class="flex items-center gap-3">
+          <div class="avatar avatar-md" style="background: linear-gradient(135deg, #10B981, #059669);">SK</div>
+          <div>
+            <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Sarah Kim</div>
+            <div style="font-size: var(--text-xs); color: var(--text-muted);">Angel Investor & YC Alumni</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">We use PitchPilotAI for every application to our accelerator program. It processes 500+ pitch decks per cohort in hours. The ROI is absolutely incredible for a team our size.</p>
+        <div class="flex items-center gap-3">
+          <div class="avatar avatar-md" style="background: linear-gradient(135deg, #F59E0B, #D97706);">AM</div>
+          <div>
+            <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">Arjun Mehta</div>
+            <div style="font-size: var(--text-xs); color: var(--text-muted);">MD, TechSprint Accelerator</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PRICING PREVIEW ======================== -->
+<section style="padding: var(--space-24) 0; background: var(--bg-surface);">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--space-8);">
+    <div class="text-center mb-12">
+      <div class="section-eyebrow" style="margin: 0 auto var(--space-4);">💎 Pricing</div>
+      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <p class="section-subtitle" style="margin: 0 auto;">Start free, upgrade when you're ready. No hidden fees.</p>
+      <!-- Toggle -->
+      <div class="flex items-center justify-center gap-4 mt-8">
+        <span style="font-size: var(--text-sm); color: var(--text-secondary);">Monthly</span>
+        <label class="toggle">
+          <input type="checkbox" id="billing-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span style="font-size: var(--text-sm); color: var(--text-secondary);">Yearly</span>
+        <span class="badge badge-success">Save 30%</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); max-width: 960px; margin: 0 auto;">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div style="font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-3);">Free</div>
+        <div class="pricing-price">$0<span class="pricing-period">/mo</span></div>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-5);">Perfect for individual investors getting started.</p>
+        <a href="register.html" class="btn btn-secondary w-full">Get Started Free</a>
+        <ul class="pricing-features">
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> 5 analyses per month</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Basic VC Score</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> PDF Summary Report</li>
+          <li class="disabled"><i data-lucide="x" width="14" height="14"></i> Investment Memo</li>
+          <li class="disabled"><i data-lucide="x" width="14" height="14"></i> Team Collaboration</li>
+          <li class="disabled"><i data-lucide="x" width="14" height="14"></i> API Access</li>
+        </ul>
+      </div>
+
+      <!-- Pro (Featured) -->
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <div style="font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-400); margin-bottom: var(--space-3);">Pro</div>
+        <div class="pricing-price" id="pro-price">$79<span class="pricing-period">/mo</span></div>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-5);">For professional investors and investment firms.</p>
+        <a href="register.html" class="btn btn-primary w-full">Start Pro Trial</a>
+        <ul class="pricing-features">
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Unlimited analyses</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Full VC Score + Breakdown</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Investment Memos</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Competitor Intelligence</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> 5 Team Members</li>
+          <li class="disabled"><i data-lucide="x" width="14" height="14"></i> White-label Reports</li>
+        </ul>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div style="font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-3);">Enterprise</div>
+        <div class="pricing-price">Custom<span class="pricing-period" style="font-size: var(--text-base);"></span></div>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-5);">For VCs, accelerators, and investment banks.</p>
+        <a href="help.html" class="btn btn-secondary w-full">Contact Sales</a>
+        <ul class="pricing-features">
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Everything in Pro</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Unlimited Team Members</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> White-label Reports</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> API Access</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> SSO & SAML</li>
+          <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Dedicated CSM</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="text-center text-muted mt-6" style="font-size: var(--text-sm);">All plans include 14-day free trial · No credit card required · Cancel anytime</p>
+  </div>
+</section>
+
+<!-- ======================== FAQ ======================== -->
+<section style="padding: var(--space-24) 0;" id="faq">
+  <div style="max-width: 760px; margin: 0 auto; padding: 0 var(--space-8);">
+    <div class="text-center mb-12">
+      <div class="section-eyebrow" style="margin: 0 auto var(--space-4);">❓ FAQ</div>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+
+    <div id="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          What file formats does PitchPilotAI support?
+          <span class="faq-icon"><i data-lucide="plus" width="18" height="18"></i></span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">PitchPilotAI supports PDF, PPT, and PPTX files up to 50MB. You can also provide a Google Slides link or Notion page URL. Our AI processes up to 200 slides per deck.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          How accurate is the AI analysis?
+          <span class="faq-icon"><i data-lucide="plus" width="18" height="18"></i></span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Our AI has been validated against 10,000+ real VC investment decisions and achieves 94% accuracy on VC score prediction. The system improves continuously with feedback from our investor community.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          Is my data secure and confidential?
+          <span class="faq-icon"><i data-lucide="plus" width="18" height="18"></i></span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Absolutely. All uploaded pitch decks are encrypted at rest and in transit using AES-256. We never share, sell, or train on your data. Enterprise plans include DPA agreements and SOC 2 Type II compliance.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          How long does analysis take?
+          <span class="faq-icon"><i data-lucide="plus" width="18" height="18"></i></span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Most pitch decks are analyzed within 45–90 seconds. Complex decks with extensive financials may take up to 3 minutes. You'll receive a notification when your analysis is ready.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          Can I collaborate with my team?
+          <span class="faq-icon"><i data-lucide="plus" width="18" height="18"></i></span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes! Pro plans include up to 5 team members. Enterprise plans support unlimited users with role-based permissions, shared workspaces, and inline commenting on analyses.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CTA SECTION ======================== -->
+<section class="cta-section">
+  <div style="max-width: 760px; margin: 0 auto; padding: 0 var(--space-8); text-align: center; position: relative; z-index: 1;">
+    <div class="section-eyebrow" style="margin: 0 auto var(--space-4);">🚀 Get Started Today</div>
+    <h2 class="section-title">Ready to Invest Smarter?</h2>
+    <p class="section-subtitle" style="margin: 0 auto var(--space-10);">Join 12,000+ investors who analyze pitch decks 10x faster with PitchPilotAI. Start your free trial today — no credit card required.</p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="register.html" class="btn btn-primary btn-xl">
+        <i data-lucide="rocket" width="20" height="20"></i>
+        Start Analyzing Free
+      </a>
+      <a href="help.html" class="btn btn-secondary btn-xl">
+        <i data-lucide="message-circle" width="20" height="20"></i>
+        Talk to Sales
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer class="footer">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-12);">
+      <div>
+        <a href="index.html" class="navbar-brand footer-brand" style="margin-bottom: var(--space-4); display: inline-flex;">
+          <div class="navbar-logo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          PitchPilot<span style="color: var(--brand-400);">AI</span>
+        </a>
+        <p class="footer-desc">AI-powered pitch deck analysis for the world's smartest investors. From raw decks to investment decisions in minutes.</p>
+        <div class="flex gap-3">
+          <a href="#" class="btn btn-ghost btn-icon-sm"><i data-lucide="twitter" width="16" height="16"></i></a>
+          <a href="#" class="btn btn-ghost btn-icon-sm"><i data-lucide="linkedin" width="16" height="16"></i></a>
+          <a href="#" class="btn btn-ghost btn-icon-sm"><i data-lucide="github" width="16" height="16"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-heading">Product</div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="analysis.html">Analysis</a></li>
+          <li><a href="#">API Docs</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-heading">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="help.html">Contact</a></li>
+          <li><a href="#">Press Kit</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-heading">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Compliance</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-bottom-text">© 2026 PitchPilotAI Inc. All rights reserved. Built for investors who move fast.</span>
+      <div class="flex items-center gap-4">
+        <span class="badge badge-success badge-dot">All Systems Operational</span>
+        <button data-theme-toggle class="btn btn-ghost btn-icon-sm">
+          <span class="icon-moon"><i data-lucide="moon" width="16" height="16"></i></span>
+          <span class="icon-sun" style="display:none"><i data-lucide="sun" width="16" height="16"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script>
+  // Init Lucide icons
+  lucide.createIcons();
+
+  // FAQ Toggle
+  function toggleFAQ(questionEl) {
+    const item = questionEl.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // Billing toggle
+  document.getElementById('billing-toggle')?.addEventListener('change', function() {
+    const priceEl = document.getElementById('pro-price');
+    if (priceEl) {
+      priceEl.innerHTML = this.checked
+        ? '$55<span class="pricing-period">/mo</span><span style="font-size:var(--text-xs); color:var(--success-400); margin-left:6px;">billed yearly</span>'
+        : '$79<span class="pricing-period">/mo</span>';
+    }
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>

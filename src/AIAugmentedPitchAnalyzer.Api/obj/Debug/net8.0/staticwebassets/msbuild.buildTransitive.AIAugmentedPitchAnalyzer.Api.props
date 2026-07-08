@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\AIAugmentedPitchAnalyzer.Api.props" />
+</Project>

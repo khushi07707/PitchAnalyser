@@ -1,18 +1,30 @@
-# macOS system files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+app.log
 
-# Editor folders
+# Virtual environments
+backend/venv/
+venv/
+.venv/
+env/
+
+# Environment configurations (Secrets)
+backend/.env
+.env
+
+# Media Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# IDEs and OS files
 .vscode/
 .idea/
-
-# Node (if added later)
-node_modules/
-npm-debug.log*
-
-# Refresh trigger
+.vs/
+*.suo
+*.user
+Thumbs.db
+Desktop.ini

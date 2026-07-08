@@ -1,0 +1,6 @@
+@AIAugmentedPitchAnalyzer.Api_HostAddress = http://localhost:5183
+
+GET {{AIAugmentedPitchAnalyzer.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
