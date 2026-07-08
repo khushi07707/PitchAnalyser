@@ -320,19 +320,80 @@
 
 <div class="toast-container" id="toast-container"></div>
 <script src="js/app.js"></script>
+<script src="js/api.js"></script>
 <script>
 lucide.createIcons();
-function filterHistory(val) {
-  const rows = document.querySelectorAll('#history-list .history-row');
-  let count = 0;
-  rows.forEach(r => {
-    const text = r.textContent.toLowerCase();
-    const match = text.includes(val.toLowerCase());
-    r.style.display = match ? '' : 'none';
-    if (match) count++;
-  });
-  document.getElementById('result-count').textContent = `Showing ${count} of 147`;
+requireAuth();
+
+let allReports = [];
+let currentPage = 1;
+
+function renderReports(reports) {
+  const list = document.getElementById('history-list');
+  const count = document.getElementById('result-count');
+
+  if (!reports || reports.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding: var(--space-10); color: var(--text-muted);"><div style="font-size: var(--text-4xl); margin-bottom: 12px;">📂</div><div>No analyses found.</div><a href="upload.html" style="color:var(--brand-400); font-size:var(--text-sm); margin-top:8px; display:inline-block;">Upload your first recording →</a></div>';
+    if (count) count.textContent = 'Showing 0 results';
+    return;
+  }
+
+  list.innerHTML = reports.map(r => {
+    const initials = r.filename.substring(0, 2).toUpperCase();
+    const scoreColor = r.overall_score >= 75 ? 'var(--success-400)' : r.overall_score >= 50 ? 'var(--warning-400)' : 'var(--danger-400)';
+    const badgeClass = r.overall_score >= 75 ? 'badge-success' : r.overall_score >= 50 ? 'badge-warning' : 'badge-danger';
+    const verdict    = r.overall_score >= 75 ? 'Strong Invest' : r.overall_score >= 50 ? 'Moderate' : 'High Risk';
+    const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : '—';
+    return `
+      <div class="history-row" style="display:flex; align-items:center; gap:var(--space-4); padding:var(--space-4); border-bottom:1px solid var(--border-subtle);">
+        <div class="avatar avatar-md" style="background:linear-gradient(135deg,#6366F1,#8B5CF6); border-radius:var(--radius-lg); font-size:13px; flex-shrink:0;">${initials}</div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:var(--text-sm); font-weight:700; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.filename}</div>
+          <div style="font-size:var(--text-xs); color:var(--text-muted);">${date}</div>
+        </div>
+        <div style="font-size:var(--text-lg); font-weight:800; color:${scoreColor}; flex-shrink:0;">${r.overall_score ?? '—'}</div>
+        <span class="badge ${badgeClass}" style="font-size:10px; flex-shrink:0;">${verdict}</span>
+        <a href="analysis.html?report_id=${r.report_id}" class="btn btn-secondary btn-sm" style="flex-shrink:0;">View</a>
+        <button class="btn btn-ghost btn-icon-sm" style="color:var(--danger-400); flex-shrink:0;" onclick="deleteReport('${r.report_id}', this)" title="Delete">
+          <i data-lucide="trash-2" width="14" height="14"></i>
+        </button>
+      </div>`;
+  }).join('');
+
+  if (count) count.textContent = `Showing ${reports.length} result${reports.length !== 1 ? 's' : ''}`;
+  lucide.createIcons();
 }
+
+async function loadHistory(search = '') {
+  try {
+    const data = await API.getReports(1, 50, search);
+    // Handle both {reports:[]} and direct array responses
+    allReports = Array.isArray(data) ? data : (data.reports || data.items || []);
+    renderReports(allReports);
+  } catch (err) {
+    console.error('History load error:', err);
+    document.getElementById('history-list').innerHTML = `<div style="text-align:center; padding:var(--space-8); color:var(--text-muted);">Failed to load reports: ${err.message}</div>`;
+  }
+}
+
+function filterHistory(val) {
+  loadHistory(val);
+}
+
+async function deleteReport(reportId, btn) {
+  if (!confirm('Delete this report? This cannot be undone.')) return;
+  btn.disabled = true;
+  try {
+    await API.deleteReport(reportId);
+    Toast.success('Deleted', 'Report removed successfully.');
+    loadHistory();
+  } catch (err) {
+    Toast.error('Delete Failed', err.message);
+    btn.disabled = false;
+  }
+}
+
+loadHistory();
 </script>
 </body>
 </html>

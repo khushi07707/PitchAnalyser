@@ -203,10 +203,10 @@
       <div class="flex items-center gap-3">
         <div class="avatar avatar-sm" style="background: var(--gradient-brand);">AJ</div>
         <div style="flex: 1; min-width: 0;">
-          <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Alex Johnson</div>
-          <div style="font-size: var(--text-xs); color: var(--text-muted);">Pro Plan</div>
+          <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-user-name>Loading...</div>
+          <div style="font-size: var(--text-xs); color: var(--text-muted);" data-user-email></div>
         </div>
-        <button class="btn btn-ghost btn-icon-sm" onclick="window.location.href='login.html'" title="Sign Out">
+        <button class="btn btn-ghost btn-icon-sm" data-logout title="Sign Out">
           <i data-lucide="log-out" width="16" height="16"></i>
         </button>
       </div>
@@ -287,7 +287,7 @@
             <a href="settings.html" class="dropdown-item"><i data-lucide="settings" width="14" height="14"></i> Settings</a>
             <a href="billing.html" class="dropdown-item"><i data-lucide="credit-card" width="14" height="14"></i> Billing</a>
             <div class="dropdown-divider"></div>
-            <a href="login.html" class="dropdown-item danger"><i data-lucide="log-out" width="14" height="14"></i> Sign Out</a>
+            <a href="#" class="dropdown-item danger" data-logout><i data-lucide="log-out" width="14" height="14"></i> Sign Out</a>
           </div>
         </div>
       </div>
@@ -329,36 +329,36 @@
           <div class="stat-icon icon-box-brand">
             <i data-lucide="bar-chart-3" width="20" height="20"></i>
           </div>
-          <div class="stat-value">147</div>
+          <div class="stat-value" id="stat-uploads">—</div>
           <div class="stat-label">Total Analyses</div>
-          <div class="stat-change up">↑ 23% this month</div>
+          <div class="stat-change up" id="stat-uploads-sub">Loading...</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-icon icon-box-success">
             <i data-lucide="target" width="20" height="20"></i>
           </div>
-          <div class="stat-value">78.4</div>
+          <div class="stat-value" id="stat-avg">—</div>
           <div class="stat-label">Avg VC Score</div>
-          <div class="stat-change up">↑ 5.2 pts vs last month</div>
+          <div class="stat-change up">Across all sessions</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-icon icon-box-warning">
             <i data-lucide="trending-up" width="20" height="20"></i>
           </div>
-          <div class="stat-value">34</div>
-          <div class="stat-label">Investment Ready</div>
-          <div class="stat-change up">↑ 8 more this week</div>
+          <div class="stat-value" id="stat-highest">—</div>
+          <div class="stat-label">Highest Score</div>
+          <div class="stat-change up">Personal best</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-icon icon-box-purple">
             <i data-lucide="file-text" width="20" height="20"></i>
           </div>
-          <div class="stat-value">89</div>
+          <div class="stat-value" id="stat-reports">—</div>
           <div class="stat-label">Reports Generated</div>
-          <div class="stat-change up">↑ 12 this week</div>
+          <div class="stat-change up">All time</div>
         </div>
       </div>
 
@@ -393,67 +393,8 @@
               <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">Recent Analyses</h3>
               <a href="history.html" style="font-size: var(--text-xs); color: var(--brand-400); font-weight: 600;">View All →</a>
             </div>
-            <div class="card-body" style="display: flex; flex-direction: column; gap: var(--space-3);">
-
-              <a href="analysis.html" class="analysis-row">
-                <div class="avatar avatar-md" style="background: linear-gradient(135deg,#6366F1,#8B5CF6); border-radius: var(--radius-lg); font-size: 13px;">NT</div>
-                <div style="flex: 1; min-width: 0;">
-                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">NovaTech Solutions</div>
-                  <div style="font-size: var(--text-xs); color: var(--text-muted);">FinTech · Series A · $5M ask</div>
-                </div>
-                <div style="text-align: right; flex-shrink: 0;">
-                  <div style="font-size: var(--text-lg); font-weight: 800; color: var(--success-400);">85</div>
-                  <span class="badge badge-success" style="font-size: 10px;">Strong Invest</span>
-                </div>
-              </a>
-
-              <a href="analysis.html" class="analysis-row">
-                <div class="avatar avatar-md" style="background: linear-gradient(135deg,#10B981,#059669); border-radius: var(--radius-lg); font-size: 13px;">GF</div>
-                <div style="flex: 1; min-width: 0;">
-                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">GreenFlow Energy</div>
-                  <div style="font-size: var(--text-xs); color: var(--text-muted);">CleanTech · Pre-Series A · $2M ask</div>
-                </div>
-                <div style="text-align: right; flex-shrink: 0;">
-                  <div style="font-size: var(--text-lg); font-weight: 800; color: var(--brand-400);">72</div>
-                  <span class="badge badge-brand" style="font-size: 10px;">Moderate</span>
-                </div>
-              </a>
-
-              <a href="analysis.html" class="analysis-row">
-                <div class="avatar avatar-md" style="background: linear-gradient(135deg,#F59E0B,#D97706); border-radius: var(--radius-lg); font-size: 13px;">HX</div>
-                <div style="flex: 1; min-width: 0;">
-                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">HealthX AI</div>
-                  <div style="font-size: var(--text-xs); color: var(--text-muted);">HealthTech · Seed · $800K ask</div>
-                </div>
-                <div style="text-align: right; flex-shrink: 0;">
-                  <div style="font-size: var(--text-lg); font-weight: 800; color: var(--warning-400);">61</div>
-                  <span class="badge badge-warning" style="font-size: 10px;">Watch</span>
-                </div>
-              </a>
-
-              <a href="analysis.html" class="analysis-row">
-                <div class="avatar avatar-md" style="background: linear-gradient(135deg,#A855F7,#7C3AED); border-radius: var(--radius-lg); font-size: 13px;">QA</div>
-                <div style="flex: 1; min-width: 0;">
-                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">QuantumAI Labs</div>
-                  <div style="font-size: var(--text-xs); color: var(--text-muted);">DeepTech · Series B · $20M ask</div>
-                </div>
-                <div style="text-align: right; flex-shrink: 0;">
-                  <div style="font-size: var(--text-lg); font-weight: 800; color: var(--success-400);">91</div>
-                  <span class="badge badge-success" style="font-size: 10px;">Strong Invest</span>
-                </div>
-              </a>
-
-              <a href="analysis.html" class="analysis-row">
-                <div class="avatar avatar-md" style="background: linear-gradient(135deg,#EF4444,#DC2626); border-radius: var(--radius-lg); font-size: 13px;">SB</div>
-                <div style="flex: 1; min-width: 0;">
-                  <div style="font-size: var(--text-sm); font-weight: 700; color: var(--text-primary);">ShopBridge</div>
-                  <div style="font-size: var(--text-xs); color: var(--text-muted);">E-commerce · Pre-Seed · $500K ask</div>
-                </div>
-                <div style="text-align: right; flex-shrink: 0;">
-                  <div style="font-size: var(--text-lg); font-weight: 800; color: var(--danger-400);">38</div>
-                  <span class="badge badge-danger" style="font-size: 10px;">High Risk</span>
-                </div>
-              </a>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: var(--space-3);" data-recent-list>
+              <div style="text-align:center; padding: var(--space-6); color: var(--text-muted); font-size: var(--text-sm);">Loading recent analyses...</div>
             </div>
           </div>
         </div>
@@ -614,8 +555,10 @@
 <div class="toast-container" id="toast-container"></div>
 
 <script src="js/app.js"></script>
+<script src="js/api.js"></script>
 <script>
 lucide.createIcons();
+requireAuth();
 
 // Activity Chart
 const actCtx = document.getElementById('activityChart').getContext('2d');
@@ -691,10 +634,51 @@ function switchChart(period, btn) {
   actChart.update();
 }
 
-// Welcome toast
-setTimeout(() => {
-  Toast.info('Analysis Complete!', 'NovaTech Solutions scored 85/100 — Strong Invest recommendation.');
-}, 2000);
+// Welcome
+const _user = Auth.getUser();
+const _hour = new Date().getHours();
+const _greeting = _hour < 12 ? 'Good morning' : _hour < 18 ? 'Good afternoon' : 'Good evening';
+document.querySelector('.welcome-card h1').textContent = `${_greeting}, ${_user?.full_name?.split(' ')[0] || 'there'} 👋`;
+document.querySelector('.welcome-card p').innerHTML = 'Your dashboard is loading real-time data from the backend.';
+
+// Load real stats
+async function loadDashboard() {
+  try {
+    const [stats, recent] = await Promise.all([
+      API.getDashboardStats(),
+      API.getRecentReports()
+    ]);
+
+    document.getElementById('stat-uploads').textContent  = stats.total_uploads;
+    document.getElementById('stat-avg').textContent      = stats.average_score || '—';
+    document.getElementById('stat-highest').textContent  = stats.highest_score || '—';
+    document.getElementById('stat-reports').textContent  = stats.total_reports;
+
+    // Render recent reports list
+    const container = document.querySelector('.card-body[data-recent-list]');
+    if (container && recent.length > 0) {
+      container.innerHTML = recent.map(r => {
+        const initials = r.filename.substring(0, 2).toUpperCase();
+        const scoreColor = r.overall_score >= 75 ? '#10B981' : r.overall_score >= 50 ? '#F59E0B' : '#EF4444';
+        return `
+          <a href="analysis.html?report_id=${r.report_id}" class="analysis-row">
+            <div class="avatar avatar-md" style="background: linear-gradient(135deg,#6366F1,#8B5CF6); border-radius: var(--radius-lg); font-size: 13px;">${initials}</div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.filename}</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">${r.created_at} · ${Math.round(r.duration)}s</div>
+            </div>
+            <div style="font-size: var(--text-sm); font-weight: 800; color: ${scoreColor};">${r.overall_score}</div>
+          </a>`;
+      }).join('');
+    } else if (container) {
+      container.innerHTML = '<div style="text-align:center; padding: var(--space-8); color: var(--text-muted); font-size: var(--text-sm);">No analyses yet. <a href="upload.html" style="color: var(--brand-400);">Upload your first recording →</a></div>';
+    }
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+  }
+}
+
+loadDashboard();
 </script>
 </body>
 </html>

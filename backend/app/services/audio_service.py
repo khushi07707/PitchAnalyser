@@ -156,15 +156,15 @@ class AudioService:
             speaking_style = "Deliberate / Slow"
             
         return {
-            "speaking_rate": round(speaking_rate, 2),
-            "pitch_mean": round(pitch_mean, 2),
-            "pitch_stability": round(pitch_stability, 2),
-            "energy": round(energy_mean, 4),
+            "speaking_rate": float(round(speaking_rate, 2)),
+            "pitch_mean": float(round(pitch_mean, 2)),
+            "pitch_stability": float(round(pitch_stability, 2)),
+            "energy": float(round(energy_mean, 4)),
             "pauses_count": int(pauses_count),
-            "silence_duration": round(silence_duration, 2),
-            "voice_modulation": round(voice_modulation, 2),
+            "silence_duration": float(round(silence_duration, 2)),
+            "voice_modulation": float(round(voice_modulation, 2)),
             "speaking_style": speaking_style,
-            "duration": round(duration, 2)
+            "duration": float(round(duration, 2))
         }
 
     @staticmethod

@@ -10,6 +10,7 @@ from app.models.report import Report
 from app.services.ai_service import AIService
 from app.services.audio_service import AudioService
 from app.services.nlp_service import NLPService
+from app.core.exceptions import ProcessingException
 
 logger = logging.getLogger(__name__)
 
