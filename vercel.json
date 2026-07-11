@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "pitchpilotai",
+  "builds": [
+    {
+      "src": "PitchAnalyser/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/PitchAnalyser/$1"
+    }
+  ]
+}

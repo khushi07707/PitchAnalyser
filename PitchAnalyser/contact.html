@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — PitchPilotAI</title>
+  <meta name="description" content="Get in touch with the PitchPilotAI team. We're here to help with questions about our AI pitch analysis platform." />
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .contact-page { min-height: 100vh; background: var(--bg-base); padding-top: 72px; }
+    .contact-hero { position: relative; text-align: center; padding: var(--space-20) var(--space-4) var(--space-16); overflow: hidden; }
+    .contact-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(99,102,241,0.18) 0%, transparent 70%); pointer-events: none; }
+    .contact-hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .contact-hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: var(--text-primary); position: relative; }
+    .contact-hero h1 span { background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .contact-hero p { font-size: var(--text-lg); color: var(--text-secondary); max-width: 520px; margin: var(--space-4) auto 0; position: relative; }
+    .contact-container { max-width: 1100px; margin: 0 auto; padding: 0 var(--space-6) var(--space-20); }
+    .contact-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-bottom: var(--space-12); }
+    @media (max-width: 860px) { .contact-options { grid-template-columns: 1fr; } .contact-main-grid { grid-template-columns: 1fr !important; } }
+    .contact-option-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-2xl); padding: var(--space-7) var(--space-6); text-align: center; transition: all var(--transition-base); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+    .contact-option-card:hover { border-color: var(--border-accent); background: var(--bg-card-hover); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(99,102,241,0.15); }
+    .contact-option-icon { width: 52px; height: 52px; border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-1); }
+    .contact-option-card h3 { font-size: var(--text-base); font-weight: 700; color: var(--text-primary); }
+    .contact-option-card p { font-size: var(--text-sm); color: var(--text-muted); margin: 0; }
+    .contact-option-card .contact-meta { font-size: var(--text-sm); font-weight: 600; color: var(--brand-400); margin-top: var(--space-1); }
+    .contact-main-grid { display: grid; grid-template-columns: 1fr 420px; gap: var(--space-8); align-items: start; }
+    .contact-form-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-2xl); padding: var(--space-8); }
+    .contact-form-card h2 { font-size: var(--text-xl); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); }
+    .contact-form-card > p { font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-6); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-5); }
+    .form-group label { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); }
+    .form-group input, .form-group select, .form-group textarea { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); color: var(--text-primary); font-size: var(--text-sm); padding: 10px 14px; width: 100%; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); font-family: inherit; outline: none; }
+    .form-group select { appearance: none; cursor: pointer; }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--brand-400); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+    .submit-btn { width: 100%; padding: 13px; background: var(--gradient-brand); border: none; border-radius: var(--radius-lg); color: #fff; font-size: var(--text-base); font-weight: 700; cursor: pointer; transition: all var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: var(--space-2); font-family: inherit; }
+    .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .submit-btn:active { transform: translateY(0); }
+    .success-msg { display: none; text-align: center; padding: var(--space-10) var(--space-4); }
+    .success-icon { width: 64px; height: 64px; background: rgba(16,185,129,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); }
+    .contact-side { display: flex; flex-direction: column; gap: var(--space-5); }
+    .info-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-2xl); padding: var(--space-6); }
+    .info-card h3 { font-size: var(--text-base); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-4); }
+    .info-row { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-row-icon { width: 36px; height: 36px; background: rgba(99,102,241,0.12); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--brand-400); }
+    .info-row-text { flex: 1; }
+    .info-row-text strong { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); display: block; }
+    .info-row-text span { font-size: var(--text-xs); color: var(--text-muted); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; animation: pulse 2s ease-in-out infinite; }
+    .status-badge { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); color: #10B981; font-weight: 600; }
+    .topic-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+    .topic-tag { padding: 4px 12px; border-radius: var(--radius-full); background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); font-size: var(--text-xs); font-weight: 600; color: var(--brand-300); cursor: pointer; transition: all var(--transition-fast); }
+    .topic-tag:hover { background: rgba(99,102,241,0.2); border-color: var(--brand-400); }
+    .nav-links-group { display: flex; align-items: center; gap: var(--space-1); }
+    .hero-badge { display: inline-flex; align-items: center; gap: var(--space-2); padding: 6px 14px; border-radius: var(--radius-full); background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); font-size: var(--text-xs); font-weight: 700; color: var(--brand-300); letter-spacing: 0.04em; margin-bottom: var(--space-6); }
+    .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-400); animation: pulse 2s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-brand">
+      <div class="navbar-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      PitchPilot<span style="color: var(--brand-400);">AI</span>
+    </a>
+    <ul class="navbar-nav nav-links-group">
+      <li><a href="index.html#features" class="navbar-link">Features</a></li>
+      <li><a href="index.html#solutions" class="navbar-link">Solutions</a></li>
+      <li><a href="index.html#pricing" class="navbar-link">Pricing</a></li>
+      <li><a href="index.html#about" class="navbar-link">About</a></li>
+      <li><a href="contact.html" class="navbar-link" style="color: var(--brand-300);">Contact</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <button data-theme-toggle class="btn btn-ghost btn-icon" title="Toggle theme" id="theme-btn">
+        <span class="icon-moon"><i data-lucide="moon" width="18" height="18"></i></span>
+        <span class="icon-sun" style="display:none"><i data-lucide="sun" width="18" height="18"></i></span>
+      </button>
+      <a href="login.html" class="btn btn-ghost btn-sm">Log in</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Start Free <i data-lucide="arrow-right" width="14" height="14"></i></a>
+    </div>
+  </div>
+</nav>
+
+<div class="contact-page">
+  <div class="contact-hero">
+    <div class="contact-hero-grid"></div>
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      We typically respond within 2 hours
+    </div>
+    <h1>Get in <span>Touch</span></h1>
+    <p>Have a question, need a demo, or want to explore enterprise pricing? We would love to hear from you.</p>
+  </div>
+
+  <div class="contact-container">
+    <div class="contact-options animate-fade-in-up">
+      <a href="mailto:support@pitchpilotai.com" class="contact-option-card">
+        <div class="contact-option-icon" style="background: rgba(99,102,241,0.15);">
+          <i data-lucide="mail" width="24" height="24" style="color: var(--brand-400);"></i>
+        </div>
+        <h3>Email Us</h3>
+        <p>For general inquiries and support</p>
+        <span class="contact-meta">support@pitchpilotai.com</span>
+      </a>
+      <a href="#contact-form" class="contact-option-card">
+        <div class="contact-option-icon" style="background: rgba(139,92,246,0.15);">
+          <i data-lucide="calendar" width="24" height="24" style="color: #A78BFA;"></i>
+        </div>
+        <h3>Book a Demo</h3>
+        <p>See PitchPilotAI in action live</p>
+        <span class="contact-meta" style="color: #A78BFA;">Schedule 30-min call</span>
+      </a>
+      <a href="#contact-form" class="contact-option-card">
+        <div class="contact-option-icon" style="background: rgba(16,185,129,0.12);">
+          <i data-lucide="building-2" width="24" height="24" style="color: #10B981;"></i>
+        </div>
+        <h3>Enterprise Sales</h3>
+        <p>Custom plans for large teams</p>
+        <span class="contact-meta" style="color: #10B981;">sales@pitchpilotai.com</span>
+      </a>
+    </div>
+
+    <div class="contact-main-grid" id="contact-form">
+      <div class="contact-form-card animate-fade-in-up">
+        <h2>Send us a Message</h2>
+        <p>Fill out the form below and our team will get back to you as soon as possible.</p>
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" placeholder="Alex" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" placeholder="Johnson" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Work Email *</label>
+            <input type="email" id="email" placeholder="alex@company.com" required />
+          </div>
+          <div class="form-group">
+            <label for="company">Company / Fund Name</label>
+            <input type="text" id="company" placeholder="e.g. Sequoia Capital" />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <select id="subject" required>
+              <option value="" disabled selected>Select a topic...</option>
+              <option value="demo">Book a Demo</option>
+              <option value="enterprise">Enterprise Pricing</option>
+              <option value="support">Technical Support</option>
+              <option value="billing">Billing and Subscription</option>
+              <option value="partnership">Partnership / Integration</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" placeholder="Tell us how we can help you..." required></textarea>
+          </div>
+          <div style="margin-bottom: var(--space-5);">
+            <p style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Quick Topics</p>
+            <div class="topic-tags">
+              <span class="topic-tag" onclick="setTopic('demo')">Book Demo</span>
+              <span class="topic-tag" onclick="setTopic('enterprise')">Enterprise Plan</span>
+              <span class="topic-tag" onclick="setTopic('support')">API Access</span>
+              <span class="topic-tag" onclick="setTopic('partnership')">Partnership</span>
+              <span class="topic-tag" onclick="setTopic('billing')">Billing Issue</span>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <i data-lucide="send" width="16" height="16"></i>
+            Send Message
+          </button>
+        </form>
+        <div class="success-msg" id="successMsg">
+          <div class="success-icon">
+            <i data-lucide="check" width="28" height="28" style="color: #10B981;"></i>
+          </div>
+          <h3 style="font-size: var(--text-xl); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2);">Message Sent!</h3>
+          <p style="color: var(--text-secondary); font-size: var(--text-sm); margin-bottom: var(--space-6);">Thanks for reaching out. Our team will respond within 2 business hours.</p>
+          <a href="index.html" class="btn btn-primary">Back to Home</a>
+        </div>
+      </div>
+
+      <div class="contact-side animate-fade-in-up" style="animation-delay: 0.1s;">
+        <div class="info-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4);">
+            <h3 style="margin-bottom: 0;">Support Status</h3>
+            <div class="status-badge"><div class="status-dot"></div>Online</div>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="clock" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>Response Time</strong><span>Usually within 2 hours</span></div>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="calendar-check" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>Business Hours</strong><span>Mon - Fri, 9 AM - 6 PM IST</span></div>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="globe" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>Languages</strong><span>English, Hindi</span></div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Contact Details</h3>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="mail" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>General Support</strong><span>support@pitchpilotai.com</span></div>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="briefcase" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>Sales and Enterprise</strong><span>sales@pitchpilotai.com</span></div>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="shield" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>Security and Privacy</strong><span>privacy@pitchpilotai.com</span></div>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon"><i data-lucide="map-pin" width="16" height="16"></i></div>
+            <div class="info-row-text"><strong>Headquarters</strong><span>Bengaluru, India</span></div>
+          </div>
+        </div>
+
+        <div class="info-card" style="background: linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(139,92,246,0.08) 100%); border-color: rgba(99,102,241,0.25);">
+          <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <div class="info-row-icon" style="background: rgba(99,102,241,0.2);"><i data-lucide="help-circle" width="16" height="16" style="color: var(--brand-300);"></i></div>
+            <h3 style="margin-bottom: 0; color: var(--brand-300);">Self-Service Help</h3>
+          </div>
+          <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4);">Find instant answers in our knowledge base - docs, tutorials, and FAQs.</p>
+          <a href="help.html" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+            <i data-lucide="book-open" width="14" height="14"></i>
+            Browse Help Center
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+  const themeToggle = document.querySelector('[data-theme-toggle]');
+  const html = document.documentElement;
+  const iconMoon = document.querySelector('.icon-moon');
+  const iconSun = document.querySelector('.icon-sun');
+  function applyTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('pp_theme', theme);
+    if (theme === 'light') { iconMoon.style.display = 'none'; iconSun.style.display = ''; }
+    else { iconMoon.style.display = ''; iconSun.style.display = 'none'; }
+  }
+  applyTheme(localStorage.getItem('pp_theme') || 'dark');
+  themeToggle && themeToggle.addEventListener('click', function() {
+    applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  window.addEventListener('scroll', function() {
+    var nb = document.getElementById('main-navbar');
+    if (nb) nb.classList.toggle('scrolled', window.scrollY > 20);
+  });
+  function setTopic(value) {
+    var select = document.getElementById('subject');
+    select.value = value;
+  }
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var first = document.getElementById('firstName').value.trim();
+    var last  = document.getElementById('lastName').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var subj  = document.getElementById('subject').value;
+    var msg   = document.getElementById('message').value.trim();
+    if (!first || !last || !email || !subj || !msg) {
+      alert('Please fill in all required fields before submitting.');
+      return;
+    }
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = 'Sending...';
+    setTimeout(function() {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      lucide.createIcons();
+    }, 1400);
+  });
+</script>
+</body>
+</html>

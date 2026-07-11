@@ -9,6 +9,16 @@
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/animations.css" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    (function() {
+      if (!localStorage.getItem('pp_access_token')) {
+        document.documentElement.style.visibility = 'hidden';
+        var currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+        sessionStorage.setItem('pp_redirect_after_login', currentPage);
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
   <style>
     .history-row {
       display: grid;

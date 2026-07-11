@@ -168,7 +168,6 @@
       <li><a href="#solutions" class="navbar-link">Solutions</a></li>
       <li><a href="pricing.html" class="navbar-link">Pricing</a></li>
       <li><a href="#about" class="navbar-link">About</a></li>
-      <li><a href="help.html" class="navbar-link">Contact</a></li>
     </ul>
 
     <!-- Actions -->
@@ -212,14 +211,14 @@
       </p>
 
       <div class="hero-ctas">
-        <a href="upload.html" class="btn btn-primary btn-xl">
+        <button onclick="handleAnalyzeClick()" class="btn btn-primary btn-xl" id="analyze-btn">
           <i data-lucide="upload-cloud" width="20" height="20"></i>
           Analyze Pitch Deck
-        </a>
-        <a href="#demo" class="btn btn-secondary btn-xl">
+        </button>
+        <button onclick="openDemoModal()" class="btn btn-secondary btn-xl" id="demo-btn">
           <i data-lucide="play-circle" width="20" height="20"></i>
           Watch Demo
-        </a>
+        </button>
       </div>
 
       <div class="hero-trust">
@@ -604,7 +603,7 @@
         <div style="font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-3);">Enterprise</div>
         <div class="pricing-price">Custom<span class="pricing-period" style="font-size: var(--text-base);"></span></div>
         <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-5);">For VCs, accelerators, and investment banks.</p>
-        <a href="help.html" class="btn btn-secondary w-full">Contact Sales</a>
+        <a href="contact.html" class="btn btn-secondary w-full">Contact Sales</a>
         <ul class="pricing-features">
           <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Everything in Pro</li>
           <li><i data-lucide="check" width="14" height="14" style="color:var(--success-400);"></i> Unlimited Team Members</li>
@@ -737,7 +736,7 @@
           <li><a href="#about">About</a></li>
           <li><a href="#">Blog</a></li>
           <li><a href="#">Careers</a></li>
-          <li><a href="help.html">Contact</a></li>
+          <li><a href="contact.html">Contact</a></li>
           <li><a href="#">Press Kit</a></li>
         </ul>
       </div>
@@ -799,6 +798,81 @@
       const target = document.querySelector(link.getAttribute('href'));
       if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
     });
+  });
+</script>
+
+<!-- ======================== DEMO MODAL ======================== -->
+<div id="demo-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.82); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); align-items:center; justify-content:center;" onclick="closeDemoModal(event)">
+  <div style="position:relative; width:min(860px,92vw); background:var(--bg-card); border:1px solid var(--border-default); border-radius:var(--radius-2xl); overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,0.6);" onclick="event.stopPropagation()">
+    <!-- Modal Header -->
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:var(--space-4) var(--space-5); border-bottom:1px solid var(--border-subtle);">
+      <div style="display:flex; align-items:center; gap:var(--space-3);">
+        <div style="width:32px;height:32px;background:rgba(99,102,241,0.15);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="play-circle" width="16" height="16" style="color:var(--brand-400);"></i>
+        </div>
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:700;color:var(--text-primary);">PitchPilotAI — Product Demo</div>
+          <div style="font-size:var(--text-xs);color:var(--text-muted);">See how AI analyzes a startup pitch deck in under 60 seconds</div>
+        </div>
+      </div>
+      <button onclick="closeDemoModal()" style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);transition:all var(--transition-fast);" onmouseover="this.style.color=\'var(--text-primary)\'" onmouseout="this.style.color=\'var(--text-muted)\'">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <!-- Video Embed -->
+    <div style="position:relative; padding-bottom:56.25%; height:0; background:#000;">
+      <iframe id="demo-iframe"
+        src=""
+        title="PitchPilotAI Demo"
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <!-- Modal Footer -->
+    <div style="padding:var(--space-4) var(--space-5); display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border-subtle);">
+      <span style="font-size:var(--text-xs);color:var(--text-muted);">Full analysis completes in under 60 seconds</span>
+      <a href="register.html" class="btn btn-primary btn-sm">Get Started Free <i data-lucide="arrow-right" width="12" height="12"></i></a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Auth-guarded Analyze button ──
+  function handleAnalyzeClick() {
+    const token = localStorage.getItem('pp_access_token');
+    if (token) {
+      window.location.href = 'upload.html';
+    } else {
+      // Save intended destination and redirect to login
+      sessionStorage.setItem('pp_redirect_after_login', 'upload.html');
+      window.location.href = 'login.html';
+    }
+  }
+
+  // ── Demo Modal ──
+  // Replace the src below with your actual YouTube/Vimeo embed URL
+  const DEMO_VIDEO_SRC = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0';
+
+  function openDemoModal() {
+    const modal = document.getElementById('demo-modal');
+    document.getElementById('demo-iframe').src = DEMO_VIDEO_SRC;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    lucide.createIcons();
+  }
+
+  function closeDemoModal(e) {
+    if (e && e.target !== document.getElementById('demo-modal') && e.type !== 'click') return;
+    const modal = document.getElementById('demo-modal');
+    modal.style.display = 'none';
+    document.getElementById('demo-iframe').src = '';
+    document.body.style.overflow = '';
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeDemoModal();
   });
 </script>
 </body>

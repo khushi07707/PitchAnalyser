@@ -6,7 +6,10 @@
 
 'use strict';
 
-const API_BASE = 'http://localhost:8000/api';
+const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_BASE = IS_LOCAL
+  ? 'http://localhost:8000/api'
+  : 'https://pitchpilotai-backend.onrender.com/api';
 
 /* ──────────────────────────────────────────────
    TOKEN STORAGE
@@ -31,6 +34,9 @@ const Auth = {
 ────────────────────────────────────────────── */
 function requireAuth() {
   if (!Auth.isLoggedIn()) {
+    // Save current page so login can redirect back here after success
+    const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+    sessionStorage.setItem('pp_redirect_after_login', currentPage);
     window.location.href = 'login.html';
     return false;
   }

@@ -336,7 +336,11 @@
     try {
       await API.login(email, password);
       Toast.success('Welcome back!', 'Login successful. Redirecting...');
-      setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+      setTimeout(() => {
+        const redirectTo = sessionStorage.getItem('pp_redirect_after_login') || 'dashboard.html';
+        sessionStorage.removeItem('pp_redirect_after_login');
+        window.location.href = redirectTo;
+      }, 800);
     } catch (err) {
       Toast.error('Login Failed', err.message || 'Incorrect email or password.');
       btn.innerHTML = '<i data-lucide="arrow-right" width="18" height="18"></i> Sign In to PitchPilotAI';
